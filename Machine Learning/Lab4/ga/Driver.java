@@ -13,7 +13,7 @@ public class Driver {
     static int POP_SIZE = 1000;
 
     public static void main(String[] adsf) {
-        Population thePopulation = new Population(POP_SIZE);
+        Population thePopulation = new Population(POP_SIZE, 0.1, 2);
         thePopulation.evaluateFitness(FitnessEvaluator.FOUR);
         System.out.println("all done" + thePopulation);
     }
