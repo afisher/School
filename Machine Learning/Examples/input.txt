@@ -1,0 +1,3 @@
+foobar\s+
+bang\s*baz.quux
+hello{10,30}
