@@ -14,8 +14,8 @@ public class GA_Runner extends Thread {
     public void run() {
         //for (int size = 10; size <= 1000; size *= 10) {
             Population thePopulation = new Population(size, rate, points);
-            for (int gen = 0; gen < 100; gen++) {
-                thePopulation.evaluateFitness(FitnessEvaluator.ONES);
+            for (int gen = 0; gen < 1000; gen++) {
+                thePopulation.evaluateFitness(FitnessEvaluator.VEHICLES);
                 System.out.println("\nall done\n" + thePopulation.stats());
                 thePopulation.selectMatingPool();
             }

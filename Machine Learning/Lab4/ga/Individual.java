@@ -7,16 +7,19 @@ import java.util.*;
  * @author levenick
  * @author afisher
  */
-public class Individual implements Evaluable, Comparable<Evaluable>, Cloneable {
+public class Individual implements Evaluable, Cloneable {
 
     byte[] dna;
     private int fitness;
 
     public int compareTo(Evaluable that) {
-        if (this.getFitness() < that.getFitness()) {
-            return -1;
+        for (int i = 0; i < dna.length; i++) {
+            if (dna[i] != that.getDNA()[i]) {
+                if (fitness < that.getFitness()) return -1;
+                else return 1;
+            }
         }
-        return 1;
+        return 0;
     }
 
     public Individual myClone() {
@@ -84,6 +87,7 @@ public class Individual implements Evaluable, Comparable<Evaluable>, Cloneable {
 
         byte[] child = new byte[dna.length];
 
+        // generate a list of random crossover points
         ArrayList<Integer> pointsList = new ArrayList<Integer>();
         for (int n = 0; n < points; n++) {
             Random gen = new Random();
@@ -91,6 +95,7 @@ public class Individual implements Evaluable, Comparable<Evaluable>, Cloneable {
             if (!pointsList.contains(p)) pointsList.add(p);
         }
 
+        // sort the points
         Collections.sort((List)pointsList);
 
         int i = 0;

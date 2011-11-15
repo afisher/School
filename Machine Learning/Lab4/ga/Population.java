@@ -15,6 +15,7 @@ public class Population extends ArrayList<Evaluable> {
     static int size;
     static double mutationRate;
     static int crossoverPoints;
+    static int matingPoolSize = 10;
 
     public Population(int s, double m, int c) {
         size = s;
@@ -101,23 +102,64 @@ public class Population extends ArrayList<Evaluable> {
     }
 
     // selects the mating pool
-    // replaces the bottom two with the children of the top two
-    // TODO implement the "real" version
+    // replaces the bottom n with the children of the top n
     public void selectMatingPool() {
-        Collections.sort((List)this);
+        // sort the individuals in descending order
+        Collections.sort((List)this, Collections.reverseOrder());
 
-        // get the mating pool (the top 2)
+        int sum = 0;
+        for (Evaluable i : this) {
+            sum += i.getFitness();
+        }
+
         ArrayList<Evaluable> matingPool = new ArrayList<Evaluable>();
-        matingPool.add(this.get(this.size()-1).myClone());
-        matingPool.add(this.get(this.size()-2).myClone());
+        Random gen = new Random();
+        for (int i = 0; i < matingPoolSize; i++) {
+            int r = gen.nextInt(sum);
+            int index = 0;
+            while (sum < r) {
+                index++;
+            }
+            matingPool.add(this.get(index));
+        }
 
-        // replace the worst 2 with mutations of the best 2
-        Evaluable parent1 = matingPool.get(0);
-        Evaluable parent2 = matingPool.get(1);
+        // mate the mating pool!
+        mate(matingPool);
+    }
 
-        this.set(0, parent1.crossover(parent2, crossoverPoints));
-        //this.get(0).mutate(mutationRate);
-        this.set(1, parent2.crossover(parent1, crossoverPoints));
-        //this.get(1).mutate(mutationRate);
+    // does crossover on each consecutive pair in the mating pool
+    private void mate(ArrayList<Evaluable> matingPool) {
+        ArrayList<Evaluable> children = new ArrayList<Evaluable>();
+
+        for (int i = 0; i < matingPool.size(); i += 2) {
+            int j = i + 1;
+            
+            // if there is a pair, mate them
+            if (j < matingPool.size()) {
+                System.out.println("Mating!");
+                Evaluable parent1 = matingPool.get(i);
+                Evaluable parent2 = matingPool.get(j);
+                children.add(parent1.crossover(parent2, crossoverPoints));
+            } else { // otherwise just add it to the children
+                children.add(matingPool.get(i));
+            }
+        }
+
+        // mutate the children
+        for (Evaluable c : children) {
+            c.mutate(mutationRate);
+        }
+
+        replacement(children);
+    }
+
+    // replace the bottom n individuals with the new children
+    private void replacement(ArrayList<Evaluable> children) {
+        for (int i = 0; i < children.size(); i++) {
+            int j = this.size() - i;
+            if (j >= 0 && j < this.size()) {
+                this.set(this.size() - i, children.get(i));
+            }
+        }
     }
 }

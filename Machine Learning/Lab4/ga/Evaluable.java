@@ -7,7 +7,7 @@ import java.util.*;
  *
  * @author levenick
  */
-public interface Evaluable {
+public interface Evaluable extends Comparable<Evaluable> {
     public byte[] getDNA();
     public void setDNA(byte[] dna);
     public int getFitness();
