@@ -83,7 +83,8 @@ public class InfoFrame extends JFrame {
         }
     }
     private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
-        theFrame.showing = !theFrame.showing;
+        //theFrame.showing = !theFrame.showing;
+        theFrame.setVisible(!theFrame.isVisible());
 }//GEN-LAST:event_showButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
