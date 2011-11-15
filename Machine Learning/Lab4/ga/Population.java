@@ -136,7 +136,7 @@ public class Population extends ArrayList<Evaluable> {
             
             // if there is a pair, mate them
             if (j < matingPool.size()) {
-                System.out.println("Mating!");
+                //System.out.println("Mating!");
                 Evaluable parent1 = matingPool.get(i);
                 Evaluable parent2 = matingPool.get(j);
                 children.add(parent1.crossover(parent2, crossoverPoints));

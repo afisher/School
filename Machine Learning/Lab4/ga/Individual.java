@@ -112,6 +112,8 @@ public class Individual implements Evaluable, Cloneable {
             c++;
         }
 
+        if (points == 0) child = firstParent;
+
         Individual ret = new Individual(child);
 
         return ret;

@@ -26,7 +26,7 @@ public class ProtoWorld extends AbstractWorld {
     /** Creates a new instance of ProtoWorld */
     public ProtoWorld(Population list) {
         super();
-        System.out.println("vl=" + theVehicleList);
+        //System.out.println("vl=" + theVehicleList);
         addSource(new LightSource(new Point2D.Double(300, 300), 1655));
         addSource(new LightSource(new Point2D.Double(320, 300), 100));
         addSource(new LightSource(new Point2D.Double(500, 300), 8775));

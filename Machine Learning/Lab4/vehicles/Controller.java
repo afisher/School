@@ -63,7 +63,7 @@ public class Controller extends Thread {
     /** Forever loop, controlled by the variable stepsToTake */
     @Override
     public void run() {
-        System.out.println("running... stoptime=" + stopTime);
+        //System.out.println("running... stoptime=" + stopTime);
         for (;;) {
             //System.out.print("^");
             if (running) {
@@ -76,7 +76,7 @@ public class Controller extends Thread {
                     System.out.println("Impossible!! time=" + time + " stopTime=" + stopTime);
                 }
             }
-            fancyDelay();
+            //fancyDelay();
         }
         theWorld.setFitnesses();
     }
