@@ -13,13 +13,12 @@ public class Individual implements Evaluable, Cloneable {
     private int fitness;
 
     public int compareTo(Evaluable that) {
-        for (int i = 0; i < dna.length; i++) {
+        return fitness - that.getFitness();
+        /*for (int i = 0; i < dna.length; i++) {
             if (dna[i] != that.getDNA()[i]) {
-                if (fitness < that.getFitness()) return -1;
-                else return 1;
             }
         }
-        return 0;
+        return 0;*/
     }
 
     public Individual myClone() {
