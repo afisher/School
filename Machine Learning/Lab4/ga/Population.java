@@ -10,7 +10,7 @@ import java.util.*;
 public class Population extends ArrayList<Evaluable> {
     public static final int DNA_LENGTH=100;  // the Length of the string
 
-    private static final int MAX_TIME=100000;
+    private static final int MAX_TIME=10000;
     public static int getMaxTime(){return MAX_TIME;}
     static int size;
     static double mutationRate;

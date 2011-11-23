@@ -7,65 +7,55 @@ package ga;
  */
 public class GA_Runner extends Thread {
 
-    public static final int size = 100;
-    /*
-    public static final double rate = 0.5;
-    public static final int points = 0;
-    */
-
-    public static final double[] rates = { 0.001, 0.01, 0.1, 0.3, 0.5 };
-    public static final int[] points = { 0, 1, 2, 5, 10, 20, 40, 60 }; 
+    public static final int[] sizes = { 10, 100, 1000, 10000 };
+    public static final double[] rates = { 0.001, 0.01, 0.1 };
+    public static final int[] points = { 0, 1, 2, -1 }; // -1 indicates n-point crossover
 
     public static final int[] types = { FitnessEvaluator.ONES, 
-                                        FitnessEvaluator.FOUR };
-
-    public static final int runs = 1000;
+                                        FitnessEvaluator.FOUR,
+                                        FitnessEvaluator.VEHICLES };
 
     public void run() {
         
         int[][] avgFits = new int[points.length][rates.length];
 
+        int runs;
+
         for (Integer t : types) {
-            int m = 0;
-            for (Double r : rates) {
-                int n = 0;
-                for (Integer p : points) {
-                    Population thePopulation = new Population(size, r, p);
-                    
-                    int total = 0;
+            if (t == FitnessEvaluator.VEHICLES) runs = 10;
+            else runs = 1000;
 
-                    for (int i = 0; i < runs; i++) {
-                        thePopulation.evaluateFitness(t);
-                        thePopulation.selectMatingPool();
-                        total += thePopulation.averageFitness();
+            for (Integer size : sizes) {
+                int m = 0;
+                for (Double r : rates) {
+                    int n = 0;
+                    for (Integer p : points) {
+                        Population thePopulation = new Population(size, r, p);
+                        
+                        int total = 0;
+
+                        for (int i = 0; i < runs; i++) {
+                            thePopulation.evaluateFitness(t);
+                            thePopulation.selectMatingPool();
+                            total += thePopulation.averageFitness();
+                        }
+
+                        avgFits[n][m] = total / runs;
+
+                        n++;
                     }
-
-                    avgFits[n][m] = total / runs;
-
-                    n++;
+                    m++;
                 }
-                m++;
-            }
 
-            if (t == FitnessEvaluator.ONES) {
-                System.out.println("Average fitness over " + runs + " generations with ONES function");
-            } else if (t == FitnessEvaluator.FOUR) {
-                System.out.println("Average fitness over " + runs + " generations with FOUR function");
+                if (t == FitnessEvaluator.ONES) {
+                    System.out.println("Average fitness over " + runs + " generations with ONES function with population size " + size);
+                } else if (t == FitnessEvaluator.FOUR) {
+                    System.out.println("Average fitness over " + runs + " generations with FOUR function with population size " + size);
+                } else {
+                    System.out.println("Average fitness over " + runs + " generations with VEHICLES function with population size " + size);
+                }
+                System.out.println(table(avgFits));
             }
-            System.out.println(table(avgFits));
-        }
-
-        // now run the vehicles
-        // with some arbitrary parameters
-        // testing all of them would take too long to run!
-        System.out.println("Running vehicle simulation...");
-        double rate = 0.01;
-        int point = 10;
-        Population thePopulation = new Population(size, rate, point);
-        
-        for (int i = 0; i < runs; i++) {
-            thePopulation.evaluateFitness(FitnessEvaluator.VEHICLES);
-            thePopulation.selectMatingPool();
         }
     }
 
