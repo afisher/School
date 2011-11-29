@@ -8,7 +8,7 @@ import java.util.*;
  * @author afisher
  */
 public class Individual implements Evaluable, Cloneable {
-    private static final double crossoverPercent = 0.1;
+    //private static final double crossoverPercent = 0.1;
 
     byte[] dna;
     private int fitness;
@@ -81,7 +81,7 @@ public class Individual implements Evaluable, Cloneable {
 
     // cross the individual with another at a specified number of points
     // order matters!
-    public Evaluable crossover(Evaluable other, int points) {
+    /*public Evaluable crossover(Evaluable other, int points) {
         if (points == -1) return nCrossover(other);
 
         byte[] firstParent  = dna;
@@ -117,12 +117,19 @@ public class Individual implements Evaluable, Cloneable {
         if (points == 0) child = firstParent;
 
         return new Individual(child);
-    }
+    }*/
 
     // n-point crossover
-    public Evaluable nCrossover(Evaluable other) {
+    public Evaluable crossover(Evaluable other, int points) {
         byte[] newDNA = new byte[dna.length];
         boolean crossover = true;
+
+        double crossoverPercent;
+        if (points > 0) {
+            crossoverPercent = dna.length / points;
+        } else {
+            crossoverPercent = 0;
+        }
 
         for (int i = 0; i < dna.length; i++) {
             double chance = Math.random();

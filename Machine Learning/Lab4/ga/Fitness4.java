@@ -11,12 +11,12 @@ package ga;
  * @author  levenick
  */
 public class Fitness4 {
-    private static final int ONE=10;
-    private static final int PAIR=300;
-    private static final int TRIPS=700;
-    private static final int FIVE=123456;
-    private static final int GENE_LENGTH=8;
-    private static final int NUM_GENES=5;
+    public static final int ONE=10;
+    public static final int PAIR=300;
+    public static final int TRIPS=700;
+    public static final int FIVE=123456;
+    public static final int GENE_LENGTH=8;
+    public static final int NUM_GENES=5;
 
     private static boolean [] has = new boolean[NUM_GENES];
 

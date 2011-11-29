@@ -7,9 +7,9 @@ package ga;
  */
 public class GA_Runner extends Thread {
 
-    public static final int[] sizes = { 10, 100, 1000, 10000 };
+    public static final int[] sizes = { /*10, */100, 1000, 10000 };
     public static final double[] rates = { 0.001, 0.01, 0.1 };
-    public static final int[] points = { 0, 1, 2, -1 }; // -1 indicates n-point crossover
+    public static final int[] points = { 0, 1, 2, 5, 10 }; 
 
     public static final int[] types = { FitnessEvaluator.ONES, 
                                         FitnessEvaluator.FOUR,
@@ -17,13 +17,27 @@ public class GA_Runner extends Thread {
 
     public void run() {
         
-        int[][] avgFits = new int[points.length][rates.length];
+        int[][] totRuns = new int[points.length][rates.length];
 
         int runs;
 
         for (Integer t : types) {
-            if (t == FitnessEvaluator.VEHICLES) runs = 10;
-            else runs = 1000;
+            /*if (t == FitnessEvaluator.VEHICLES) runs = 10;
+            else runs = 1000;*/
+
+            // set the max fitness we are looking for
+            int max;
+            int maxRuns;
+            if (t == FitnessEvaluator.ONES) {
+                max     = 100;
+                maxRuns = 30000;
+            } else if (t == FitnessEvaluator.FOUR) {
+                max     = Fitness4.FIVE;
+                maxRuns = 100000;
+            } else {
+                max = Population.MAX_TIME;
+                maxRuns = 10;
+            }
 
             for (Integer size : sizes) {
                 int m = 0;
@@ -33,28 +47,33 @@ public class GA_Runner extends Thread {
                         Population thePopulation = new Population(size, r, p);
                         
                         int total = 0;
+                        runs = 0;
 
-                        for (int i = 0; i < runs; i++) {
+                        while (thePopulation.bestFitness() < max && runs < maxRuns) {
+                        //for (int i = 0; i < runs; i++) {
                             thePopulation.evaluateFitness(t);
                             thePopulation.selectMatingPool();
-                            total += thePopulation.averageFitness();
+                            //total += thePopulation.averageFitness();
+                            runs++;
                         }
 
-                        avgFits[n][m] = total / runs;
+                        totRuns[n][m] = runs;
 
                         n++;
                     }
                     m++;
                 }
 
+                
                 if (t == FitnessEvaluator.ONES) {
-                    System.out.println("Average fitness over " + runs + " generations with ONES function with population size " + size);
+                    System.out.println("Number of runs for ONES function with population size " + size);
                 } else if (t == FitnessEvaluator.FOUR) {
-                    System.out.println("Average fitness over " + runs + " generations with FOUR function with population size " + size);
+                    System.out.println("Number of runs for FOUR function with population size " + size);
                 } else {
-                    System.out.println("Average fitness over " + runs + " generations with VEHICLES function with population size " + size);
+                    System.out.println("Number of runs for VEHICLES function with population size " + size);
                 }
-                System.out.println(table(avgFits));
+                System.out.println(table(totRuns));
+                
             }
         }
     }
