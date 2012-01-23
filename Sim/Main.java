@@ -9,7 +9,7 @@ import java.io.*;
  * @author Ashley Fisher
  */
 public class Main extends JFrame {
-    private boolean chattering = true;
+    private boolean chattering = false;
     private int delay = 200;
     private Random randGen = new Random();
 
@@ -104,6 +104,7 @@ public class Main extends JFrame {
 
     private void runHelper(boolean doSwitch) {
         int runs = (Integer)(runsSpinner.getValue());
+        int wins = 0;
 
         Random randGen = new Random();
 
@@ -145,11 +146,23 @@ public class Main extends JFrame {
             }
 
             chat("And... the winning door was... door #" + (prize + 1));
-            if (choice == prize) chat("You win!!");
-            else chat("Sorry... you have lost.");
+            if (choice == prize) {
+                chat("You win!!");
+                wins++;
+            } else chat("Sorry... you have lost.");
 
             chat("\n");
         }
+
+        if (doSwitch) {
+            theTA.append("Switching player stats:\n");
+        } else {
+            theTA.append("Staying player stats:\n");
+        }
+
+        theTA.append("Runs: " + runs + "\n");
+        theTA.append("Wins: " + wins + "\n");
+        theTA.append("Percent: " + ((wins * 1.0)/runs)*100 + "\n\n");
     }
 
     private void chat(String s) {
