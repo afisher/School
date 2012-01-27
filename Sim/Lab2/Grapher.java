@@ -7,11 +7,13 @@ import java.io.*;
 public class Grapher extends JPanel {
     private ArrayList<DataPair> data;
 
-    //final int padding = 100; // axes padding
-    //int height;
-    //int width;
+    private final int padding = 100; // axes padding
+    private int height;
+    private int width;
 
-    int r= 5; // dot radius
+    int r = 5; // dot radius
+    int xTicks = 6;
+    int yTicks = 6;
 
     public Grapher(ArrayList<DataPair> d) {
         super();
@@ -22,12 +24,15 @@ public class Grapher extends JPanel {
         data = d;
     }
 
+    private void calcSizes() {
+        height = getHeight() - padding;
+        width  = getWidth()  - padding;
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int padding = 100;
-        int height = getHeight() - padding;
-        int width  = getWidth()  - padding;
+        calcSizes();
 
         g.drawLine(padding, height, width+padding, height);
         g.drawLine(padding, 0, padding, height);
@@ -44,8 +49,6 @@ public class Grapher extends JPanel {
             int h = pair.getH();
             int p = pair.getP();
 
-            System.out.println(p);
-
             if (h > max) max = h;
             if (p > max) max = p;
 
@@ -54,26 +57,35 @@ public class Grapher extends JPanel {
 
         maxT--;
 
-        // draw tick marks
-        int xTick = width  / 5;
-        int yTick = height / 5;
-        for (int i = 0; i < maxT; i++) {
-            g.drawLine(padding+i*xTick, height, padding+i*xTick, height+5); 
-            g.drawString(""+i, padding+i*xTick-5, height+50);
-        }
-        for (int i = 0; i < height; i += yTick) {
-            g.drawLine(padding-5, i, padding, i); 
+        int xInc;
+        if (maxT > xTicks) xInc = maxT / xTicks;
+        else xInc = 1;
+
+        int yInc;
+        if (max > yTicks) yInc = max / yTicks;
+        else yInc = 1;
+
+        // draw tick marks for y-axis
+        int yPos = 0; // where we are on the y axis
+        for (int i = 0; i < yTicks; i++) {
+            int drawPos = height - (int)(yPos * (height / (double) max));
+            if (yPos % yInc == 0) {
+                g.drawLine(padding - 10, drawPos, padding, drawPos);
+                g.drawString(""+yPos, padding - 50, drawPos+r);
+            }
+            yPos += yInc;
         }
 
         int prevX = 0, prevY1 = 0, prevY2 = 0;
         for (DataPair pair : data) {
+
             int h = pair.getH();
             int p = pair.getP();
 
             // calculate where to put the dots
             int x  = padding + (int)(t * (width  / (double) maxT)) - r;
-            int y1 = height - (int)(h * (height / (double) max)) - r;
-            int y2 = height - (int)(p * (height / (double) max)) - r;
+            int y1 = height  - (int)(h * (height / (double) max))  - r;
+            int y2 = height  - (int)(p * (height / (double) max))  - r;
 
             // draw herbivore dot
             g.setColor(Color.BLUE);
@@ -97,6 +109,15 @@ public class Grapher extends JPanel {
             prevX  = x;
             prevY1 = y1;
             prevY2 = y2;
+
+            g.setColor(Color.BLACK);
+
+            // draw tick marks for x-axis
+            if (t % xInc == 0) {
+                g.drawLine(x+r, height, x+r, height+10);
+                g.drawString(""+t, x, height+30);
+            }
+
 
             t++;
         }

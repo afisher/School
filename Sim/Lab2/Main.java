@@ -57,10 +57,10 @@ public class Main extends JFrame {
 
         hSpinner     = new JSpinner(new SpinnerNumberModel(1000, 0, 1000000000, 100));
         pSpinner     = new JSpinner(new SpinnerNumberModel(100, 0, 1000000000, 10));
-        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, -10.0, 10.0, 0.1));
-        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, -10.0, 10.0, 0.1));
-        alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, -10.0, 10.0, 0.01));
-        betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, -10.0, 10.0, 0.01));
+        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.1));
+        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.1));
+        alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
+        betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -69,7 +69,7 @@ public class Main extends JFrame {
             }
         });
 
-        graph.setPreferredSize(new Dimension(600, 500));
+        graph.setPreferredSize(new Dimension(800, 480));
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
