@@ -33,13 +33,6 @@ public class Main extends JFrame {
                 new Main();
             }
         });
-        /*data.add(new DataPair(h, p));
-        output();
-
-        while (h > 0 && p > 0) {
-            step();
-            output();
-        }*/
     }
 
     public Main() {
@@ -57,8 +50,8 @@ public class Main extends JFrame {
 
         hSpinner     = new JSpinner(new SpinnerNumberModel(1000, 0, 1000000000, 100));
         pSpinner     = new JSpinner(new SpinnerNumberModel(100, 0, 1000000000, 10));
-        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.1));
-        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.1));
+        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.01));
+        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.01));
         alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
         betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
 
