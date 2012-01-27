@@ -18,12 +18,19 @@ public class Main extends JFrame {
 
     private Grapher graph = new Grapher(data);
 
-    JSpinner hSpinner;
+    /*JSpinner hSpinner;
     JSpinner pSpinner;
     JSpinner aSpinner;
     JSpinner bSpinner;
     JSpinner alphaSpinner;
-    JSpinner betaSpinner;
+    JSpinner betaSpinner;*/
+
+    JTextField hField;
+    JTextField pField;
+    JTextField aField;
+    JTextField bField;
+    JTextField alphaField;
+    JTextField betaField;
 
     JButton runButton;
 
@@ -48,12 +55,19 @@ public class Main extends JFrame {
         JLabel alphaLabel = new JLabel("alpha");
         JLabel betaLabel  = new JLabel("beta");
 
-        hSpinner     = new JSpinner(new SpinnerNumberModel(1000, 0, 1000000000, 100));
-        pSpinner     = new JSpinner(new SpinnerNumberModel(100, 0, 1000000000, 10));
-        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.01));
-        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.01));
-        alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
-        betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.01));
+        /*hSpinner     = new JSpinner(new SpinnerNumberModel(1000, 0, 1000000, 100));
+        pSpinner     = new JSpinner(new SpinnerNumberModel(100, 0, 1000000, 10));
+        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.001));
+        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.001));
+        alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.001));
+        betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.001));*/
+
+        hField = new JTextField("1000");
+        pField = new JTextField("100");
+        aField = new JTextField("0.01");
+        bField = new JTextField("0.01");
+        alphaField = new JTextField("0.01");
+        betaField = new JTextField("0.01");
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -69,22 +83,28 @@ public class Main extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 
         panel.add(hLabel);
-        panel.add(hSpinner);
+        //panel.add(hSpinner);
+        panel.add(hField);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(pLabel);
-        panel.add(pSpinner);
+        panel.add(pField);
+        //panel.add(pSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(aLabel);
-        panel.add(aSpinner);
+        panel.add(aField);
+        //panel.add(aSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(bLabel);
-        panel.add(bSpinner);
+        panel.add(bField);
+        //panel.add(bSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(alphaLabel);
-        panel.add(alphaSpinner);
+        panel.add(alphaField);
+        //panel.add(alphaSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(betaLabel);
-        panel.add(betaSpinner);
+        panel.add(betaField);
+        //panel.add(betaSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(runButton);
 
@@ -116,12 +136,19 @@ public class Main extends JFrame {
     }
 
     private void runHelper() {
-        h     = (Integer)(hSpinner.getValue());
+        /*h     = (Integer)(hSpinner.getValue());
         p     = (Integer)(pSpinner.getValue());
         a     = (Double)(aSpinner.getValue());
         b     = (Double)(bSpinner.getValue());
         alpha = (Double)(alphaSpinner.getValue());
-        beta  = (Double)(betaSpinner.getValue());
+        beta  = (Double)(betaSpinner.getValue());*/
+
+        h     = Integer.parseInt(hField.getText());
+        p     = Integer.parseInt(pField.getText());
+        a     = Double.parseDouble(aField.getText());
+        b     = Double.parseDouble(bField.getText());
+        alpha = Double.parseDouble(alphaField.getText());
+        beta  = Double.parseDouble(betaField.getText());
 
         data = new ArrayList<DataPair>();
         data.add(new DataPair(h, p));
