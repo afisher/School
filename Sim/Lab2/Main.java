@@ -131,10 +131,11 @@ public class Main extends JFrame {
         beta  = (Double)(betaSpinner.getValue());
 
         data = new ArrayList<DataPair>();
+        data.add(new DataPair(h, p));
 
-        while (h > 0 && p > 0) {
-            data.add(new DataPair(h, p));
+        while (h > 0 && p > 0 && data.size() < 5000) {
             step();
+            data.add(new DataPair(h, p));
         }
 
         graph.setData(data);
