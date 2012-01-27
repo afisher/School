@@ -11,9 +11,9 @@ public class Grapher extends JPanel {
     private int height;
     private int width;
 
-    int r = 5; // dot radius
-    int xTicks = 6;
-    int yTicks = 6;
+    private int r = 5; // dot radius
+    private int xTicks = 6; // number of ticks on the x-axis
+    private int yTicks = 6; // number of ticks on the y-axis
 
     public Grapher(ArrayList<DataPair> d) {
         super();
