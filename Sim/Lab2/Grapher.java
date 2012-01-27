@@ -44,13 +44,13 @@ public class Grapher extends JPanel {
         int maxT = 0;
 
         //find the max val
-        int max  = 0;
+        int maxH  = 0, maxP = 0;
         for (DataPair pair : data) {
             int h = pair.getH();
             int p = pair.getP();
 
-            if (h > max) max = h;
-            if (p > max) max = p;
+            if (h > maxH) maxH = h;
+            if (p > maxP) maxP = p;
 
             maxT++;
         }
@@ -62,13 +62,13 @@ public class Grapher extends JPanel {
         else xInc = 1;
 
         int yInc;
-        if (max > yTicks) yInc = max / yTicks;
+        if (maxH > yTicks) yInc = maxH / yTicks;
         else yInc = 1;
 
         // draw tick marks for y-axis
         int yPos = 0; // where we are on the y axis
         for (int i = 0; i < yTicks; i++) {
-            int drawPos = height - (int)(yPos * (height / (double) max));
+            int drawPos = height - (int)(yPos * (height / (double) maxH));
             if (yPos % yInc == 0) {
                 g.drawLine(padding - 10, drawPos, padding, drawPos);
                 g.drawString(""+yPos, padding - 50, drawPos+r);
@@ -84,8 +84,8 @@ public class Grapher extends JPanel {
 
             // calculate where to put the dots
             int x  = padding + (int)(t * (width  / (double) maxT)) - r;
-            int y1 = height  - (int)(h * (height / (double) max))  - r;
-            int y2 = height  - (int)(p * (height / (double) max))  - r;
+            int y1 = height  - (int)(h * (height / (double) maxH))  - r;
+            int y2 = height  - (int)(p * (height / (double) maxP))  - r;
 
             // draw herbivore dot
             g.setColor(Color.BLUE);
