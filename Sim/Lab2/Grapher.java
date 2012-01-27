@@ -52,7 +52,7 @@ public class Grapher extends JPanel {
             int x = (int)(t * (width / (double) maxT));
             int y = (int)(h * (height / (double) maxH));
 
-            g.fillOval(x/*+padding-r*/, y/*-padding-r*/, 2*r, 2*r);
+            g.fillOval(x+padding-r, y-padding-r, 2*r, 2*r);
 
             /*g.fillOval(width * t/maxT + padding-r, 
                        height - (height * h/maxH) + padding-r, 
