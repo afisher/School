@@ -6,24 +6,17 @@ import java.io.*;
 
 public class Main extends JFrame {
     private int h = 1000;
-    private int p = 100;
+    private int p = 49;
 
-    private double a = 0.01;
-    private double b = 0.01;
+    private double a = 0.1;
+    private double b = 0.2;
 
-    private double alpha = 0.001;
-    private double beta  = 0.001;
+    private double alpha = 0.002;
+    private double beta  = 0.0002;
 
     private ArrayList<DataPair> data = new ArrayList<DataPair>();
 
     private Grapher graph = new Grapher(data);
-
-    /*JSpinner hSpinner;
-    JSpinner pSpinner;
-    JSpinner aSpinner;
-    JSpinner bSpinner;
-    JSpinner alphaSpinner;
-    JSpinner betaSpinner;*/
 
     JTextField hField;
     JTextField pField;
@@ -47,7 +40,7 @@ public class Main extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        
+
         JLabel hLabel     = new JLabel("h");
         JLabel pLabel     = new JLabel("p");
         JLabel aLabel     = new JLabel("a");
@@ -55,19 +48,24 @@ public class Main extends JFrame {
         JLabel alphaLabel = new JLabel("alpha");
         JLabel betaLabel  = new JLabel("beta");
 
-        /*hSpinner     = new JSpinner(new SpinnerNumberModel(1000, 0, 1000000, 100));
-        pSpinner     = new JSpinner(new SpinnerNumberModel(100, 0, 1000000, 10));
-        aSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.001));
-        bSpinner     = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 1.0, 0.001));
-        alphaSpinner = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.001));
-        betaSpinner  = new JSpinner(new SpinnerNumberModel(0.01, 0.0, 1.0, 0.001));*/
+        hField = new JTextField();
+        hField.setText("" + h);
 
-        hField = new JTextField("1000");
-        pField = new JTextField("100");
-        aField = new JTextField("0.01");
-        bField = new JTextField("0.01");
-        alphaField = new JTextField("0.01");
-        betaField = new JTextField("0.01");
+        pField = new JTextField();
+        pField.setText("" + p);
+
+        aField = new JTextField();
+        aField.setText("" + a);
+
+        bField = new JTextField();
+        bField.setText("" + b);
+
+        alphaField = new JTextField();
+        alphaField.setText("" + alpha);
+
+        betaField = new JTextField();
+        betaField.setText("" + beta);
+
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -123,10 +121,6 @@ public class Main extends JFrame {
         p += dP;
     }
 
-    private void output() {
-        System.out.println("h = " + h + ", p = " + p);
-    }
-
     private void runButtonClicked() {
         new Thread() {
             public void run() {
@@ -136,13 +130,6 @@ public class Main extends JFrame {
     }
 
     private void runHelper() {
-        /*h     = (Integer)(hSpinner.getValue());
-        p     = (Integer)(pSpinner.getValue());
-        a     = (Double)(aSpinner.getValue());
-        b     = (Double)(bSpinner.getValue());
-        alpha = (Double)(alphaSpinner.getValue());
-        beta  = (Double)(betaSpinner.getValue());*/
-
         h     = Integer.parseInt(hField.getText());
         p     = Integer.parseInt(pField.getText());
         a     = Double.parseDouble(aField.getText());
@@ -159,6 +146,6 @@ public class Main extends JFrame {
         }
 
         graph.setData(data);
-        graph.repaint(); 
+        graph.repaint();
     }
 }

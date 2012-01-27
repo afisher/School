@@ -78,7 +78,6 @@ public class Grapher extends JPanel {
 
         int prevX = 0, prevY1 = 0, prevY2 = 0;
         for (DataPair pair : data) {
-
             int h = pair.getH();
             int p = pair.getP();
 
