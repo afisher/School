@@ -16,7 +16,8 @@ public class Main extends JFrame {
 
     private ArrayList<DataPair> data = new ArrayList<DataPair>();
 
-    private Grapher graph = new Grapher(data);
+    private Grapher graph           = new Grapher(data);
+    private PhaseGrapher phaseGraph = new PhaseGrapher(data);
 
     JTextField hField;
     JTextField pField;
@@ -66,7 +67,6 @@ public class Main extends JFrame {
         betaField = new JTextField();
         betaField.setText("" + beta);
 
-
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -74,40 +74,36 @@ public class Main extends JFrame {
             }
         });
 
-        graph.setPreferredSize(new Dimension(800, 480));
+        graph.setPreferredSize(new Dimension(800, 400));
+        phaseGraph.setPreferredSize(new Dimension(800, 400));
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 
         panel.add(hLabel);
-        //panel.add(hSpinner);
         panel.add(hField);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(pLabel);
         panel.add(pField);
-        //panel.add(pSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(aLabel);
         panel.add(aField);
-        //panel.add(aSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(bLabel);
         panel.add(bField);
-        //panel.add(bSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(alphaLabel);
         panel.add(alphaField);
-        //panel.add(alphaSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(betaLabel);
         panel.add(betaField);
-        //panel.add(betaSpinner);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(runButton);
 
         add(panel, BorderLayout.NORTH);
         add(graph, BorderLayout.CENTER);
+        add(phaseGraph, BorderLayout.SOUTH);
 
         pack();
         setVisible(true);
@@ -147,5 +143,8 @@ public class Main extends JFrame {
 
         graph.setData(data);
         graph.repaint();
+
+        phaseGraph.setData(data);
+        phaseGraph.repaint();
     }
 }
