@@ -136,7 +136,7 @@ public class Main extends JFrame {
         data = new ArrayList<DataPair>();
         data.add(new DataPair(h, p));
 
-        while (h > 0 && p > 0 && data.size() < 5000) {
+        while (h > 0 && p > 0 && data.size() < 1000000) {
             step();
             data.add(new DataPair(h, p));
         }
