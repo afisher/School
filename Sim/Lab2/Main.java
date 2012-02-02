@@ -6,13 +6,18 @@ import java.io.*;
 
 public class Main extends JFrame {
     private int h = 1000;
-    private int p = 49;
+    private int p = 100;
 
     private double a = 0.1;
-    private double b = 0.2;
+    private double b = 0.1;
 
-    private double alpha = 0.002;
-    private double beta  = 0.0002;
+    private double alpha = 0.001;
+    private double beta  = 0.0001;
+
+    private double space = 100; // max predators before they start to decrease from limited space
+    private double gamma = 0.1; // ratio of predators that die each timestep when space is limited
+
+    private double max_timesteps = 10000;
 
     private ArrayList<DataPair> data = new ArrayList<DataPair>();
 
@@ -112,6 +117,10 @@ public class Main extends JFrame {
     private void step() {
         double dH = a * h - alpha * h * p;
         double dP = beta * h * p - b * p;
+        
+        if (p >= space) {
+            dP -= gamma * p;
+        }
 
         h += dH;
         p += dP;
@@ -136,7 +145,7 @@ public class Main extends JFrame {
         data = new ArrayList<DataPair>();
         data.add(new DataPair(h, p));
 
-        while (h > 0 && p > 0 && data.size() < 1000000) {
+        while (h > 0 && p > 0 && data.size() < max_timesteps) {
             step();
             data.add(new DataPair(h, p));
         }
