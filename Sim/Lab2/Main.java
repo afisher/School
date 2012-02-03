@@ -31,6 +31,9 @@ public class Main extends JFrame {
     JTextField alphaField;
     JTextField betaField;
 
+    JTextField spaceField;
+    JTextField gammaField;
+
     JButton runButton;
 
     public static void main(String[] args) {
@@ -54,6 +57,9 @@ public class Main extends JFrame {
         JLabel alphaLabel = new JLabel("alpha");
         JLabel betaLabel  = new JLabel("beta");
 
+        JLabel spaceLabel = new JLabel("space");
+        JLabel gammaLabel = new JLabel("gamma");
+
         hField = new JTextField();
         hField.setText("" + h);
 
@@ -71,6 +77,12 @@ public class Main extends JFrame {
 
         betaField = new JTextField();
         betaField.setText("" + beta);
+
+        spaceField = new JTextField();
+        spaceField.setText("" + space);
+
+        gammaField = new JTextField();
+        gammaField.setText("" + gamma);
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -103,6 +115,12 @@ public class Main extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(betaLabel);
         panel.add(betaField);
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.add(spaceLabel);
+        panel.add(spaceField);
+        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+        panel.add(gammaLabel);
+        panel.add(gammaField);
         panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(runButton);
 
@@ -141,6 +159,9 @@ public class Main extends JFrame {
         b     = Double.parseDouble(bField.getText());
         alpha = Double.parseDouble(alphaField.getText());
         beta  = Double.parseDouble(betaField.getText());
+
+        space = Double.parseDouble(spaceField.getText());
+        gamma = Double.parseDouble(gammaField.getText());
 
         data = new ArrayList<DataPair>();
         data.add(new DataPair(h, p));
