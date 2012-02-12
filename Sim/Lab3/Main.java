@@ -5,10 +5,14 @@ import java.awt.*;
 import java.io.*;
 
 public class Main extends JFrame {
-    JSlider timeSlider;
-    JSlider gSlider;
-    JSlider mSlider;
-    JSlider delaySlider;
+    private boolean running = false;
+
+    SimulationPanel pendulumArea = new SimulationPanel();
+
+    SpecialSlider timeSlider;
+    SpecialSlider gSlider;
+    SpecialSlider mSlider;
+    SpecialSlider delaySlider;
 
     JButton runButton;
     JButton stepButton;
@@ -32,10 +36,10 @@ public class Main extends JFrame {
         JLabel mLabel     = new JLabel("m");
         JLabel delayLabel = new JLabel("delay");
 
-        timeSlider  = new JSlider();
-        gSlider     = new JSlider();
-        mSlider     = new JSlider();
-        delaySlider = new JSlider();
+        timeSlider  = new SpecialSlider();
+        gSlider     = new SpecialSlider();
+        mSlider     = new SpecialSlider();
+        delaySlider = new SpecialSlider();
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -53,29 +57,29 @@ public class Main extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+        panel.setLayout(new FlowLayout());//new BoxLayout(panel, BoxLayout.LINE_AXIS));
+        panel.setPreferredSize(new Dimension(200, 380));
 
         panel.add(timeLabel);
         panel.add(timeSlider);
-        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
         panel.add(gLabel);
         panel.add(gSlider);
-        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
         panel.add(mLabel);
         panel.add(mSlider);
-        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
         panel.add(delayLabel);
         panel.add(delaySlider);
-        panel.add(Box.createRigidArea(new Dimension(10, 0)));
+
         panel.add(runButton);
-        panel.add(Box.createRigidArea(new Dimension(10, 0)));
         panel.add(stepButton);
 
-        JPanel pendulumArea = new JPanel();
+        pendulumArea.setPreferredSize(new Dimension(440, 380));
 
-        setPreferredSize(new Dimension(640, 480));
+        setPreferredSize(new Dimension(640, 380));
 
-        add(panel, BorderLayout.NORTH);
+        add(panel, BorderLayout.WEST);
         add(pendulumArea, BorderLayout.CENTER);
 
         pack();
@@ -83,6 +87,7 @@ public class Main extends JFrame {
     }
 
     private void stepButtonClicked() {
+        step();
     }
 
     private void runButtonClicked() {
@@ -94,5 +99,30 @@ public class Main extends JFrame {
     }
 
     private void runHelper() {
+        if (running) {
+            running = false;
+            runButton.setText("Run");
+        } else {
+            running = true;
+            runButton.setText("Stop");
+
+            while (running) {
+                step();
+                
+                try {
+                    Thread.sleep(Params.delay);
+                } catch (InterruptedException e) {}
+            }
+        }
+    }
+
+    private void step() {
+        Params.timestep = timeSlider.getValue();
+        Params.gravity = gSlider.getValue();
+        Params.magnetism = mSlider.getValue();
+        Params.delay = delaySlider.getValue() * 100;
+
+        pendulumArea.step();
+        pendulumArea.repaint();
     }
 }
