@@ -132,7 +132,7 @@ public class Main extends JFrame {
     private void step() {
         Params.timestep  = timeSlider.getValue() * 10;
         Params.gravity   = gSlider.getValue();
-        Params.magnetism = mSlider.getValue() * 10000;
+        Params.magnetism = mSlider.getValue() * 6000;
         Params.delay     = delaySlider.getValue() * 100;
 
         pendulumArea.step();

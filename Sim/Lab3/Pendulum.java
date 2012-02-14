@@ -47,12 +47,17 @@ public class Pendulum {
         mTheta = 0;
         for (Pendulum p : pendulums) {
             if (p.getTheta() != theta) {
-                int direction = 1;
+                int direction;
+                double angle;
                 if (theta > p.getTheta()) {
                     direction =  -1;
+                    angle = p.getTheta() - theta;
+                } else {
+                    direction = 1;
+                    angle = theta - p.getTheta();
                 }
 
-                double angle = Math.min(p.getTheta() - theta, theta - p.getTheta());
+                //double angle = Math.min(p.getTheta() - theta, theta - p.getTheta());
                 double d = Math.tan(angle) * length;
 
                 mTheta += direction * Params.magnetism * (1/(d*d)) * Math.sin(angle);
