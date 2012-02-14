@@ -34,6 +34,11 @@ public class SimulationPanel extends JPanel implements MouseListener{
         }
     }
 
+    public void clear() {
+        pendulums.clear(); 
+        repaint();
+    }
+
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();

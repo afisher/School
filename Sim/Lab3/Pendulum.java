@@ -47,12 +47,9 @@ public class Pendulum {
         mTheta = 0;
         for (Pendulum p : pendulums) {
             if (p.getTheta() != theta) {
-                int direction;
-                if (theta < p.getTheta()) {
-                    direction =  1;
-                }
-                else {
-                    direction = -1;
+                int direction = 1;
+                if (theta > p.getTheta()) {
+                    direction =  -1;
                 }
 
                 double angle = Math.min(p.getTheta() - theta, theta - p.getTheta());

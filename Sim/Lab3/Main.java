@@ -16,6 +16,7 @@ public class Main extends JFrame {
 
     JButton runButton;
     JButton stepButton;
+    JButton resetButton;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -55,6 +56,13 @@ public class Main extends JFrame {
             }
         });
 
+        resetButton = new JButton("Reset");
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetButtonClicked();
+            }
+        });
+
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         panel.setLayout(new FlowLayout());//new BoxLayout(panel, BoxLayout.LINE_AXIS));
@@ -74,6 +82,7 @@ public class Main extends JFrame {
 
         panel.add(runButton);
         panel.add(stepButton);
+        panel.add(resetButton);
 
         pendulumArea.setPreferredSize(new Dimension(440, 380));
 
@@ -108,7 +117,7 @@ public class Main extends JFrame {
 
             while (running) {
                 step();
-                
+
                 try {
                     Thread.sleep(Params.delay);
                 } catch (InterruptedException e) {}
@@ -116,11 +125,15 @@ public class Main extends JFrame {
         }
     }
 
+    private void resetButtonClicked() {
+        pendulumArea.clear();
+    }
+
     private void step() {
-        Params.timestep = timeSlider.getValue();
-        Params.gravity = gSlider.getValue();
-        Params.magnetism = mSlider.getValue();
-        Params.delay = delaySlider.getValue() * 100;
+        Params.timestep  = timeSlider.getValue() * 10;
+        Params.gravity   = gSlider.getValue();
+        Params.magnetism = mSlider.getValue() * 10000;
+        Params.delay     = delaySlider.getValue() * 100;
 
         pendulumArea.step();
         pendulumArea.repaint();
