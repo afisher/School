@@ -26,7 +26,11 @@ public class SimulationPanel extends JPanel implements MouseListener{
 
     public void step() {
         for (Pendulum p : pendulums) {
-            p.step();
+            p.calcNewValues(pendulums);
+        }
+
+        for (Pendulum p : pendulums) {
+            p.step(); // apply new values
         }
     }
 

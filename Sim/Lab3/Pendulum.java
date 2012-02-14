@@ -8,6 +8,7 @@ public class Pendulum {
     private static int length = 140;
     private double theta;
     private double vTheta;
+    private double mTheta; // the amount theta changes based on magnetism
 
     private Color bobColor;
 
@@ -17,12 +18,14 @@ public class Pendulum {
     public Pendulum() {
         theta  = 0;
         vTheta = 0;
+        mTheta = 0;
         calcColor();
     }
 
     public Pendulum(double t) {
         theta  = t;
         vTheta = 0;
+        mTheta = 0;
         calcColor();
     }
 
@@ -35,8 +38,29 @@ public class Pendulum {
     }
 
     public void step() {
-        vTheta += (-Params.gravity * Math.cos(theta)) / Params.timestep;
-        theta  += vTheta;
+        vTheta += mTheta + (-Params.gravity * Math.cos(theta));
+        theta  += vTheta / Params.timestep;
+    }
+
+    public void calcNewValues(ArrayList<Pendulum> pendulums) {
+        // calculate mTheta for the next step
+        mTheta = 0;
+        for (Pendulum p : pendulums) {
+            if (p.getTheta() != theta) {
+                int direction;
+                if (theta < p.getTheta()) {
+                    direction =  1;
+                }
+                else {
+                    direction = -1;
+                }
+
+                double angle = Math.min(p.getTheta() - theta, theta - p.getTheta());
+                double d = Math.tan(angle) * length;
+
+                mTheta += direction * Params.magnetism * (1/(d*d)) * Math.sin(angle);
+            }
+        }
     }
 
     public void paint(Graphics g) {
@@ -93,4 +117,6 @@ public class Pendulum {
     private int yEnd() {
         return (int) (Params.yPivot - length * Math.sin(theta));
     }
+
+    public double getTheta() { return theta; } 
 }
