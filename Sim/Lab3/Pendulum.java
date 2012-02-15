@@ -57,8 +57,7 @@ public class Pendulum {
                     angle = theta - p.getTheta();
                 }
 
-                //double angle = Math.min(p.getTheta() - theta, theta - p.getTheta());
-                double d = Math.tan(angle) * length;
+                double d = Math.sqrt(Math.pow(xEnd() - p.xEnd(), 2) + Math.pow(yEnd() - p.yEnd(), 2));
 
                 mTheta += direction * Params.magnetism * (1/(d*d)) * Math.sin(angle);
             }
@@ -111,12 +110,12 @@ public class Pendulum {
     }
 
     // calculate end of stick
-    private int xEnd() {
+    public int xEnd() {
         return (int) (Params.xPivot + length * Math.cos(theta));
     }
 
     // calculate end of stick
-    private int yEnd() {
+    public int yEnd() {
         return (int) (Params.yPivot - length * Math.sin(theta));
     }
 
