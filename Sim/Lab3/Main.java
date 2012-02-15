@@ -37,10 +37,10 @@ public class Main extends JFrame {
         JLabel mLabel     = new JLabel("m");
         JLabel delayLabel = new JLabel("delay");
 
-        timeSlider  = new SpecialSlider();
-        gSlider     = new SpecialSlider();
-        mSlider     = new SpecialSlider();
-        delaySlider = new SpecialSlider();
+        timeSlider  = new SpecialSlider(1, 10, 10, 2, 1);
+        gSlider     = new SpecialSlider(0, 10, 1, 2, 1);
+        mSlider     = new SpecialSlider(0, 10, 2, 2, 1);
+        delaySlider = new SpecialSlider(0, 10, 1, 2, 1);
 
         runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
@@ -130,9 +130,9 @@ public class Main extends JFrame {
     }
 
     private void step() {
-        Params.timestep  = timeSlider.getValue() * 10;
+        Params.timestep  = timeSlider.getValue();
         Params.gravity   = gSlider.getValue();
-        Params.magnetism = mSlider.getValue() * 6000;
+        Params.magnetism = mSlider.getValue() * 10000;
         Params.delay     = delaySlider.getValue() * 100;
 
         pendulumArea.step();

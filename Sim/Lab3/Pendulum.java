@@ -58,6 +58,7 @@ public class Pendulum {
                 }
 
                 double d = Math.sqrt(Math.pow(xEnd() - p.xEnd(), 2) + Math.pow(yEnd() - p.yEnd(), 2));
+                if (d < 0.1) d = 0.1; // fix for very small distances
 
                 mTheta += direction * Params.magnetism * (1/(d*d)) * Math.sin(angle);
             }

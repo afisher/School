@@ -5,5 +5,5 @@ public class Params {
     public static int delay;
 
     public static int xPivot = 200;
-    public static int yPivot = 100;
+    public static int yPivot = 160;
 }
