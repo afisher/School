@@ -29,7 +29,6 @@ public class FileSystem {
     public Inode allocateInode() {
         if (inodeFreeList.isEmpty()) {
             Globals.complain("All out of inodes!");
-            return null;
         }
 
         return inodeFreeList.remove(0);
@@ -38,7 +37,6 @@ public class FileSystem {
     public Block allocateBlock() {
         if (blockFreeList.isEmpty()) {
             Globals.complain("All out of blocks!");
-            return null;
         }
 
         return blockFreeList.remove(0);

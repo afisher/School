@@ -41,7 +41,8 @@ public class Block extends Sector {
     }
 
     public String toString() {
-        return "Block:\n\tnumber = " + number +
-               "\n\tbytes = " + loadDirect();
+        return "\nBlock:\n\tnumber = " + number +
+               "\n\tbytes = " + loadDirect() +
+               "\n";
     }
 }

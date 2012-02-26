@@ -82,10 +82,11 @@ public class Inode extends Sector {
     public Block getDoubleIndirectLink() { return doubleIndirectLink; }
 
     public String toString() {
-        return "Inode:\n\tnumber = " + number + 
+        return "\nInode:\n\tnumber = " + number + 
                "\n\tsize = " + size + 
                "\n\tdirectLink = " + directLink +
                "\n\tindirectLink = " + indirectLink +
-               "\n\tdoubleIndirectLink = " + doubleIndirectLink;
+               "\n\tdoubleIndirectLink = " + doubleIndirectLink +
+               "\n";
     }
 }
