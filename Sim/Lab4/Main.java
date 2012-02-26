@@ -10,9 +10,9 @@ public class Main extends JFrame {
     JButton displayButton;
     JButton deleteButton;
     JButton clearButton;
+    JButton quitButton;
 
-    JTextArea fileTextArea;
-    JTextArea infoTextArea;
+    JTextArea textArea;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -23,6 +23,8 @@ public class Main extends JFrame {
     }
 
     public Main() {
+        Globals.init();
+
         setTitle("Disk Simulation");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,7 +44,7 @@ public class Main extends JFrame {
             }
         });
 
-        displayButton = new JButton("Display Disk Contents");
+        displayButton = new JButton("Display");
         displayButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayButtonClicked();
@@ -63,56 +65,54 @@ public class Main extends JFrame {
             }
         });
 
-        fileTextArea = new JTextArea();
-        fileTextArea.setPreferredSize(new Dimension(640, 200));
+        quitButton = new JButton("Quit");
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                quitButtonClicked();
+            }
+        });
 
-        infoTextArea = new JTextArea();
-        infoTextArea.setPreferredSize(new Dimension(640, 200));
+        textArea = new JTextArea();
 
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 
         panel.add(loadButton);
         panel.add(saveButton);
         panel.add(displayButton);
         panel.add(deleteButton);
         panel.add(clearButton);
+        panel.add(quitButton);
+
+        JScrollPane scrollpane = new JScrollPane(textArea);
 
         setPreferredSize(new Dimension(640, 480));
 
-        JPanel filePanel = new JPanel();
-        filePanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.LINE_AXIS));
-
-        filePanel.add(fileTextArea);
-
-        JPanel infoPanel = new JPanel();
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.LINE_AXIS));
-
-        infoPanel.add(infoTextArea);
-
         add(panel, BorderLayout.NORTH);
-        add(filePanel, BorderLayout.CENTER);
-        add(infoPanel, BorderLayout.SOUTH);
+        add(scrollpane, BorderLayout.CENTER);
 
         pack();
         setVisible(true);
     }
 
     private void loadButtonClicked() {
+        textArea.setText(Globals.FS.load()); 
     }
 
     private void saveButtonClicked() {
+        Globals.FS.save(textArea.getText()); 
     }
 
     private void displayButtonClicked() {
+        textArea.setText(Globals.FS.toString());
     }
 
     private void deleteButtonClicked() {
     }
 
     private void clearButtonClicked() {
+    }
+
+    private void quitButtonClicked() {
+        System.exit(0);
     }
 }
