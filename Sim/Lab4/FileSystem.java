@@ -29,6 +29,7 @@ public class FileSystem {
     public Inode allocateInode() {
         if (inodeFreeList.isEmpty()) {
             Globals.complain("All out of inodes!");
+            return null;
         }
 
         return inodeFreeList.remove(0);
@@ -37,6 +38,7 @@ public class FileSystem {
     public Block allocateBlock() {
         if (blockFreeList.isEmpty()) {
             Globals.complain("All out of blocks!");
+            return null;
         }
 
         return blockFreeList.remove(0);
@@ -60,8 +62,10 @@ public class FileSystem {
         String filename = getFilename();
         Inode inode = allocateInode();
 
-        inode.store(s);
-        fileList.add(new File(filename, inode));
+        if (inode != null) {
+            inode.store(s);
+            fileList.add(new File(filename, inode));
+        }
     }
 
     public void delete() {
@@ -74,8 +78,10 @@ public class FileSystem {
             }
         }
 
-        deleteFile(file);
-        fileList.remove(file);
+        if (file != null) {
+            deleteFile(file);
+            fileList.remove(file);
+        } else Globals.complain("File doesn't exist!");
     }
 
     public void clear() {
