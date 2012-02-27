@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Block extends Sector {
     public static final int BLOCK_LENGTH = 8;
 
@@ -31,8 +33,14 @@ public class Block extends Sector {
     }
 
     public String loadSingleIndirect() {
-        // TODO impement
-        return "Write me";
+        String ret = "";
+
+        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
+            Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i))); 
+            ret += currentBlock.loadDirect();
+        }
+
+        return ret;
     }
 
     public String loadDoubleIndirect() {
@@ -48,5 +56,24 @@ public class Block extends Sector {
 
     public void clearBytes() {
         bytes = new byte[BLOCK_LENGTH];
+    }
+
+    public int getBlockNumber(int i) {
+        return ((bytes[i * 2] << BLOCK_LENGTH)) | bytes[i * 2 + 1];
+    }
+
+    public void setBlockNumber(int i, int n) {
+        bytes[i * 2]     = (byte)(n >> BLOCK_LENGTH);
+        bytes[i * 2 + 1] = (byte)(n & 0xFF); 
+    }
+
+    public ArrayList<Block> getBlocks() {
+        ArrayList<Block> ret = new ArrayList<Block>();
+
+        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
+            ret.add((Block)(Globals.FS.getSector(getBlockNumber(i))));
+        }
+
+        return ret;
     }
 }

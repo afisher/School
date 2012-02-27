@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 8;
+    public static final int NUM_SECTORS = 16;
     public static final int NUM_INODES = 4;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
@@ -10,7 +10,7 @@ public class FileSystem {
     private ArrayList<Block> blockFreeList = new ArrayList<Block>();
     private ArrayList<File>  fileList      = new ArrayList<File>();
 
-    Sector[] sectors = new Sector[NUM_SECTORS];
+    private Sector[] sectors = new Sector[NUM_SECTORS];
 
     public FileSystem() {
         // initialize all of the inodes
@@ -120,6 +120,10 @@ public class FileSystem {
 
         if (s != null && s.length() > 0) return s;
         else return "foo";
+    }
+
+    public Sector getSector(int i) {
+        return sectors[i];
     }
 
     public String toString() {

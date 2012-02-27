@@ -4,7 +4,7 @@ public class Inode extends Sector {
     private Block indirectLink;
     private Block doubleIndirectLink;
 
-    private static final int LINKS_PER_BLOCK = 4; 
+    public static final int LINKS_PER_BLOCK = 4; 
 
     public Inode(int n) {
         super(n);
@@ -25,13 +25,29 @@ public class Inode extends Sector {
     }
 
     private void storeDirect(String data) {
-        directLink = Globals.FS.allocateBlock();
-        int lastIndex = Math.min(Block.BLOCK_LENGTH, data.length());
-        directLink.store(data.substring(0, lastIndex));
+        if (directLink == null) {
+            directLink = Globals.FS.allocateBlock();
+        }
+        directLink.store(data);
     }
 
     private void storeSingle(String data) {
-        //TODO implement
+        storeDirect(data.substring(0, Block.BLOCK_LENGTH));
+
+        indirectLink = Globals.FS.allocateBlock();
+
+        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
+            Block newBlock = Globals.FS.allocateBlock();
+
+            int start = Block.BLOCK_LENGTH * (i+1);
+            int end   = Math.min(data.length(), Block.BLOCK_LENGTH * (i+2));
+
+            if (data.length() > start) {
+                newBlock.store(data.substring(start, end));
+            }
+
+            indirectLink.setBlockNumber(i, newBlock.getNumber());
+        }
     }
 
     private void storeDouble(String data) {
@@ -85,7 +101,7 @@ public class Inode extends Sector {
         return "\nInode:\n\tnumber = " + number + 
                "\n\tsize = " + size + 
                "\n\tdirectLink = " + directLink +
-               "\n\tindirectLink = " + indirectLink +
+               "\n\tindirectLink = " + (indirectLink == null? null : indirectLink.getBlocks()) +
                "\n\tdoubleIndirectLink = " + doubleIndirectLink +
                "\n";
     }
