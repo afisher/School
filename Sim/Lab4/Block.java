@@ -45,4 +45,8 @@ public class Block extends Sector {
                "\n\tbytes = " + loadDirect() +
                "\n";
     }
+
+    public void clearBytes() {
+        bytes = new byte[BLOCK_LENGTH];
+    }
 }

@@ -107,9 +107,11 @@ public class Main extends JFrame {
     }
 
     private void deleteButtonClicked() {
+        Globals.FS.delete();
     }
 
     private void clearButtonClicked() {
+        Globals.FS.clear();
     }
 
     private void quitButtonClicked() {

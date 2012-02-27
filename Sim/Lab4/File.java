@@ -14,4 +14,8 @@ public class File {
         return "File:\n\tname = " + name +
                "\n\tinode = " + inode;
     }
+
+    public void clear() {
+        inode.clear();
+    }
 }

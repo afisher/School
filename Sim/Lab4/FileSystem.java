@@ -6,9 +6,9 @@ public class FileSystem {
     public static final int NUM_INODES = 4;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
-    ArrayList<Inode> inodeFreeList = new ArrayList<Inode>();
-    ArrayList<Block> blockFreeList = new ArrayList<Block>();
-    ArrayList<File>  fileList      = new ArrayList<File>();
+    private ArrayList<Inode> inodeFreeList = new ArrayList<Inode>();
+    private ArrayList<Block> blockFreeList = new ArrayList<Block>();
+    private ArrayList<File>  fileList      = new ArrayList<File>();
 
     Sector[] sectors = new Sector[NUM_SECTORS];
 
@@ -62,6 +62,50 @@ public class FileSystem {
 
         inode.store(s);
         fileList.add(new File(filename, inode));
+    }
+
+    public void delete() {
+        String filename = getFilename();
+
+        File file = null;
+        for (File f : fileList) {
+            if (f.getName().equals(filename)) {
+                file = f;
+            }
+        }
+
+        deleteFile(file);
+        fileList.remove(file);
+    }
+
+    public void clear() {
+        for (File f : fileList) {
+            deleteFile(f);
+        }
+
+        fileList.clear();
+    }
+
+    private void deleteFile(File file) {
+        if (file != null) {
+            Inode inode = file.getInode();
+            inodeFreeList.add(inode);
+
+            // free the direct link
+            blockFreeList.add(inode.getDirectLink());
+
+            // free the indirect link
+            if (inode.getIndirectLink() != null) {
+                blockFreeList.add(inode.getIndirectLink());
+            }
+
+            // free the double indirect link
+            if (inode.getDoubleIndirectLink() != null) {
+                blockFreeList.add(inode.getDoubleIndirectLink());
+            }
+
+            file.clear();
+        }
     }
 
     private String getFilename() {

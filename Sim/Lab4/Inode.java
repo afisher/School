@@ -89,4 +89,14 @@ public class Inode extends Sector {
                "\n\tdoubleIndirectLink = " + doubleIndirectLink +
                "\n";
     }
+
+    public void clear() {
+        size = 0;
+
+        directLink.clearBytes();
+
+        directLink         = null;
+        indirectLink       = null;
+        doubleIndirectLink = null;
+    }
 }
