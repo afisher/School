@@ -54,7 +54,6 @@ public class Inode extends Sector {
         storeSingle(data);
 
         int start = singleSizeMax();
-        int end = data.length(); 
 
         doubleIndirectLink = Globals.FS.allocateBlock();
 
@@ -66,13 +65,12 @@ public class Inode extends Sector {
                 Block dataBlock = Globals.FS.allocateBlock();
 
                 if (data.length() > start) {
-                    dataBlock.store(data.substring(start, end));
+                    dataBlock.store(data.substring(start));
                 }
 
                 newBlock.setBlockNumber(j, dataBlock.getNumber());
 
                 start += Block.BLOCK_LENGTH;
-                end += Block.BLOCK_LENGTH;
             }
         }
     }
@@ -106,11 +104,11 @@ public class Inode extends Sector {
         return doubleIndirectLink.loadDoubleIndirect();
     }
 
-    private int singleSizeMax() {
+    public static int singleSizeMax() {
         return Block.BLOCK_LENGTH + LINKS_PER_BLOCK * Block.BLOCK_LENGTH;
     }
 
-    private int doubleSizeMax() {
+    public static int doubleSizeMax() {
         return singleSizeMax() + LINKS_PER_BLOCK * LINKS_PER_BLOCK * Block.BLOCK_LENGTH;
     }
 
@@ -125,14 +123,12 @@ public class Inode extends Sector {
                "\n\tsize = " + size + 
                "\n\tdirectLink = " + directLink +
                "\n\tindirectLink = " + (indirectLink == null? null : indirectLink.getBlocks()) +
-               "\n\tdoubleIndirectLink = " + doubleIndirectLink +
+               "\n\tdoubleIndirectLink = " + (doubleIndirectLink == null? null : doubleIndirectLink.getDoubleBlocks()) +
                "\n";
     }
 
     public void clear() {
         size = 0;
-
-        directLink.clearBytes();
 
         directLink         = null;
         indirectLink       = null;

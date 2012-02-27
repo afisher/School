@@ -94,14 +94,24 @@ public class FileSystem {
             // free the direct link
             blockFreeList.add(inode.getDirectLink());
 
-            // free the indirect link
-            if (inode.getIndirectLink() != null) {
-                blockFreeList.add(inode.getIndirectLink());
+            // free the indirect link and its blocks
+            Block singleIndirect = inode.getIndirectLink();
+            if (singleIndirect != null) {
+                blockFreeList.add(singleIndirect);
+
+                for (Block b : singleIndirect.getBlocks()) {
+                    blockFreeList.add(b);
+                }
             }
 
-            // free the double indirect link
-            if (inode.getDoubleIndirectLink() != null) {
-                blockFreeList.add(inode.getDoubleIndirectLink());
+            // free the double indirect link and its blocks
+            Block doubleIndirect = inode.getDoubleIndirectLink();
+            if (doubleIndirect != null) {
+                blockFreeList.add(doubleIndirect);
+
+                for (Block b : doubleIndirect.getDoubleBlocks()) {
+                    blockFreeList.add(b);
+                }
             }
 
             file.clear();
