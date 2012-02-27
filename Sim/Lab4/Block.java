@@ -44,8 +44,14 @@ public class Block extends Sector {
     }
 
     public String loadDoubleIndirect() {
-        // TODO impement
-        return "Write me";
+        String ret = "";
+
+        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
+            Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i)));
+            ret += currentBlock.loadSingleIndirect();
+        }
+
+        return ret;
     }
 
     public String toString() {
@@ -59,11 +65,11 @@ public class Block extends Sector {
     }
 
     public int getBlockNumber(int i) {
-        return ((bytes[i * 2] << BLOCK_LENGTH)) | bytes[i * 2 + 1];
+        return ((bytes[i * 2] << 8)) | bytes[i * 2 + 1];
     }
 
     public void setBlockNumber(int i, int n) {
-        bytes[i * 2]     = (byte)(n >> BLOCK_LENGTH);
+        bytes[i * 2]     = (byte)(n >> 8);
         bytes[i * 2 + 1] = (byte)(n & 0xFF); 
     }
 

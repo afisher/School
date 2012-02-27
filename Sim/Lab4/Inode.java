@@ -51,7 +51,30 @@ public class Inode extends Sector {
     }
 
     private void storeDouble(String data) {
-        // TODO implement
+        storeSingle(data);
+
+        int start = singleSizeMax();
+        int end = data.length(); 
+
+        doubleIndirectLink = Globals.FS.allocateBlock();
+
+        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
+            Block newBlock = Globals.FS.allocateBlock();
+            doubleIndirectLink.setBlockNumber(i, newBlock.getNumber());
+
+            for (int j = 0; j < LINKS_PER_BLOCK; j++) {
+                Block dataBlock = Globals.FS.allocateBlock();
+
+                if (data.length() > start) {
+                    dataBlock.store(data.substring(start, end));
+                }
+
+                newBlock.setBlockNumber(j, dataBlock.getNumber());
+
+                start += Block.BLOCK_LENGTH;
+                end += Block.BLOCK_LENGTH;
+            }
+        }
     }
 
     public String load() {
