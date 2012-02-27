@@ -97,8 +97,6 @@ public class FileSystem {
             // free the indirect link and its blocks
             Block singleIndirect = inode.getIndirectLink();
             if (singleIndirect != null) {
-                blockFreeList.add(singleIndirect);
-
                 for (Block b : singleIndirect.getBlocks()) {
                     blockFreeList.add(b);
                 }
@@ -107,8 +105,6 @@ public class FileSystem {
             // free the double indirect link and its blocks
             Block doubleIndirect = inode.getDoubleIndirectLink();
             if (doubleIndirect != null) {
-                blockFreeList.add(doubleIndirect);
-
                 for (Block b : doubleIndirect.getDoubleBlocks()) {
                     blockFreeList.add(b);
                 }
@@ -137,8 +133,11 @@ public class FileSystem {
     }
 
     public String toString() {
-        return "FileSystem:\nFree inodes: " + inodeFreeList.toString() +
-               "\nFree blocks: " + blockFreeList.toString() +
-               "\nThe files: " + fileList.toString();
+        return "FileSystem:\nFree inodes: \tsize = " + inodeFreeList.size() +
+               "\n" + inodeFreeList.toString() +
+               "\nFree blocks: \tsize =  " + blockFreeList.size() +
+               "\n" + blockFreeList.toString() +
+               "\nThe files: \tsize = " + fileList.size() +
+               "\n" + fileList.toString();
     }
 }

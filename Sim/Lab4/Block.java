@@ -69,11 +69,16 @@ public class Block extends Sector {
         bytes[i * 2 + 1] = (byte)(n & 0xFF); 
     }
 
+    public Block getBlock(int i) {
+        return (Block)(Globals.FS.getSector(getBlockNumber(i)));
+    }
+
     public ArrayList<Block> getBlocks() {
         ArrayList<Block> ret = new ArrayList<Block>();
+        ret.add(this);
 
         for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            ret.add((Block)(Globals.FS.getSector(getBlockNumber(i))));
+            ret.add(getBlock(i));
         }
 
         return ret;
@@ -83,10 +88,11 @@ public class Block extends Sector {
         ArrayList<Block> ret   = new ArrayList<Block>();
         ArrayList<Block> links = getBlocks();
 
+        ret.add(this);
+
         for (Block link : links) {
-            ArrayList<Block> dataBlocks = link.getBlocks();
             for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-                ret.add(dataBlocks.get(i));
+                ret.add(link.getBlock(i));
             }
         }
 
