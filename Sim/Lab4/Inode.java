@@ -64,7 +64,9 @@ public class Inode extends Sector {
                 for (int j = 0; j < LINKS_PER_BLOCK; j++) {
                     if (data.length() > start) {
                         Block dataBlock = Globals.FS.allocateBlock();
-                        dataBlock.store(data.substring(start));
+
+                        int end = Math.min(start + Block.BLOCK_LENGTH, data.length());
+                        dataBlock.store(data.substring(start, end));
                         newBlock.setBlockNumber(j, dataBlock.getNumber());
                     } else {
                         newBlock.setBlockNumber(j, 0);

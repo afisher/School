@@ -36,8 +36,12 @@ public class Block extends Sector {
         String ret = "";
 
         for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i))); 
-            ret += currentBlock.loadDirect();
+            int blockNumber = getBlockNumber(i);
+
+            if (blockNumber != 0) {
+                Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i))); 
+                ret += currentBlock.loadDirect();
+            }
         }
 
         return ret;
@@ -47,8 +51,12 @@ public class Block extends Sector {
         String ret = "";
 
         for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i)));
-            ret += currentBlock.loadSingleIndirect();
+            int blockNumber = getBlockNumber(i);
+
+            if (blockNumber != 0) {
+                Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i)));
+                ret += currentBlock.loadSingleIndirect();
+            }
         }
 
         return ret;

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 64; 
+    public static final int NUM_SECTORS = 48; 
     public static final int NUM_INODES = 4;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
@@ -59,6 +59,11 @@ public class FileSystem {
     }
 
     public void save(String s) {
+        if (!willFit(s)) {
+            Globals.complain("There's not enough free space!");
+            return;
+        }
+
         String filename = getFilename();
         Inode inode = allocateInode();
 
@@ -136,6 +141,40 @@ public class FileSystem {
 
     public Sector getSector(int i) {
         return sectors[i];
+    }
+
+    public boolean willFit(String data) {
+        if (blockFreeList.isEmpty()) return false;
+
+        int length = data.length();
+        int blocksNeeded = 1;
+        
+        int compareSize = Block.BLOCK_LENGTH;
+
+        if (length > compareSize) {
+            blocksNeeded += 2;
+            compareSize += Block.BLOCK_LENGTH;
+
+            for (int i = 1; i < Inode.LINKS_PER_BLOCK; i++) {
+                if (length > compareSize) blocksNeeded++;
+                compareSize += Block.BLOCK_LENGTH;
+            }
+
+            for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
+                if (length > compareSize) {
+                    blocksNeeded += 1;
+
+                    for (int j = 0; j < Inode.LINKS_PER_BLOCK; j++) {
+                        blocksNeeded += 1;
+                        if (length > compareSize) blocksNeeded++;
+                        compareSize += Block.BLOCK_LENGTH;
+                    }
+                }
+            }
+        }
+
+        if (blocksNeeded > blockFreeList.size()) return false;
+        return true;
     }
 
     public String toString() {
