@@ -78,7 +78,9 @@ public class Block extends Sector {
         ret.add(this);
 
         for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            ret.add(getBlock(i));
+            if (getBlockNumber(i) != 0) {
+                ret.add(getBlock(i));
+            }
         }
 
         return ret;
@@ -92,7 +94,9 @@ public class Block extends Sector {
 
         for (Block link : links) {
             for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-                ret.add(link.getBlock(i));
+                if (getBlockNumber(i) != 0) {
+                    ret.add(link.getBlock(i));
+                }
             }
         }
 

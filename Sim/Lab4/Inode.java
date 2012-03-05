@@ -37,16 +37,15 @@ public class Inode extends Sector {
         indirectLink = Globals.FS.allocateBlock();
 
         for (int i = 0; i < LINKS_PER_BLOCK; i++) {
-            Block newBlock = Globals.FS.allocateBlock();
 
             int start = Block.BLOCK_LENGTH * (i+1);
             int end   = Math.min(data.length(), Block.BLOCK_LENGTH * (i+2));
 
             if (data.length() > start) {
+                Block newBlock = Globals.FS.allocateBlock();
                 newBlock.store(data.substring(start, end));
+                indirectLink.setBlockNumber(i, newBlock.getNumber());
             }
-
-            indirectLink.setBlockNumber(i, newBlock.getNumber());
         }
     }
 
@@ -58,19 +57,23 @@ public class Inode extends Sector {
         doubleIndirectLink = Globals.FS.allocateBlock();
 
         for (int i = 0; i < LINKS_PER_BLOCK; i++) {
-            Block newBlock = Globals.FS.allocateBlock();
-            doubleIndirectLink.setBlockNumber(i, newBlock.getNumber());
+            if (data.length() > start) {
+                Block newBlock = Globals.FS.allocateBlock();
+                doubleIndirectLink.setBlockNumber(i, newBlock.getNumber());
 
-            for (int j = 0; j < LINKS_PER_BLOCK; j++) {
-                Block dataBlock = Globals.FS.allocateBlock();
+                for (int j = 0; j < LINKS_PER_BLOCK; j++) {
+                    if (data.length() > start) {
+                        Block dataBlock = Globals.FS.allocateBlock();
+                        dataBlock.store(data.substring(start));
+                        newBlock.setBlockNumber(j, dataBlock.getNumber());
+                    } else {
+                        newBlock.setBlockNumber(j, 0);
+                    }
 
-                if (data.length() > start) {
-                    dataBlock.store(data.substring(start));
+                    start += Block.BLOCK_LENGTH;
                 }
-
-                newBlock.setBlockNumber(j, dataBlock.getNumber());
-
-                start += Block.BLOCK_LENGTH;
+            } else {
+                doubleIndirectLink.setBlockNumber(i, 0);
             }
         }
     }

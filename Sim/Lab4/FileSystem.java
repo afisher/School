@@ -10,17 +10,17 @@ public class FileSystem {
     private ArrayList<Block> blockFreeList = new ArrayList<Block>();
     private ArrayList<File>  fileList      = new ArrayList<File>();
 
-    private Sector[] sectors = new Sector[NUM_SECTORS];
+    private Sector[] sectors = new Sector[NUM_SECTORS + 1]; // position 0 is unused
 
     public FileSystem() {
         // initialize all of the inodes
-        for (int i = 0; i < NUM_INODES; i++) {
+        for (int i = 1; i <= NUM_INODES; i++) {
             sectors[i] = new Inode(i);
             inodeFreeList.add((Inode)sectors[i]);
         }
 
         // initialize all of the blocks
-        for (int i = NUM_INODES; i < NUM_SECTORS; i++) {
+        for (int i = NUM_INODES + 1; i <= NUM_SECTORS; i++) {
             sectors[i] = new Block(i);
             blockFreeList.add((Block)sectors[i]);
         }
