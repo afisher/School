@@ -96,14 +96,20 @@ public class Block extends Sector {
 
     public ArrayList<Block> getDoubleBlocks() {
         ArrayList<Block> ret   = new ArrayList<Block>();
-        ArrayList<Block> links = getBlocks();
+        //ArrayList<Block> links = getBlocks();
 
         ret.add(this);
 
-        for (Block link : links) {
-            for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-                if (getBlockNumber(i) != 0) {
-                    ret.add(link.getBlock(i));
+        //for (Block link : links) {
+        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
+            if (getBlockNumber(i) != 0) {
+                Block link = getBlock(i);
+                ret.add(link);
+
+                for (int j = 0; j < Inode.LINKS_PER_BLOCK; j++) {
+                    if (link.getBlockNumber(j) != 0) {
+                        ret.add(link.getBlock(j));
+                    }
                 }
             }
         }
