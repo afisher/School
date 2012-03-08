@@ -57,17 +57,18 @@ public class Inode extends Sector {
         doubleIndirectLink = Globals.FS.allocateBlock();
 
         for (int i = 0; i < LINKS_PER_BLOCK; i++) {
-            if (data.length() > start) {
+            if (data.length() > start - 1) {
                 Block newBlock = Globals.FS.allocateBlock();
                 doubleIndirectLink.setBlockNumber(i, newBlock.getNumber());
 
                 for (int j = 0; j < LINKS_PER_BLOCK; j++) {
-                    if (data.length() > start) {
+                    if (data.length() > start - 1) {
                         Block dataBlock = Globals.FS.allocateBlock();
 
                         int end = Math.min(start + Block.BLOCK_LENGTH, data.length());
                         dataBlock.store(data.substring(start, end));
                         newBlock.setBlockNumber(j, dataBlock.getNumber());
+
                     } else {
                         newBlock.setBlockNumber(j, 0);
                     }
