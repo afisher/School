@@ -5,11 +5,13 @@ import java.awt.*;
 import java.io.*;
 
 public class Main extends JFrame {
-    JButton loadButton;
+    String inputFile = "data.txt";
+
+    /*JButton loadButton;
     JButton saveButton;
     JButton displayButton;
     JButton deleteButton;
-    JButton clearButton;
+    JButton clearButton;*/
     JButton quitButton;
 
     JTextArea textArea;
@@ -29,7 +31,7 @@ public class Main extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
+/*
         loadButton = new JButton("Load");
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +66,7 @@ public class Main extends JFrame {
                 clearButtonClicked();
             }
         });
-
+*/
         quitButton = new JButton("Quit");
         quitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -75,25 +77,49 @@ public class Main extends JFrame {
         textArea = new JTextArea();
 
         JPanel panel = new JPanel();
-
+/*
         panel.add(loadButton);
         panel.add(saveButton);
         panel.add(displayButton);
         panel.add(deleteButton);
         panel.add(clearButton);
+*/
         panel.add(quitButton);
 
         JScrollPane scrollpane = new JScrollPane(textArea);
 
         setPreferredSize(new Dimension(640, 480));
 
-        add(panel, BorderLayout.NORTH);
         add(scrollpane, BorderLayout.CENTER);
+        add(panel, BorderLayout.SOUTH);
 
         pack();
         setVisible(true);
+
+        run();
     }
 
+    private void run() {
+        File file = new File(inputFile);
+
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] pieces = line.split("\s");
+
+                // which logical device to save to -- worry about it later
+                int deviceNum = Integer.parseInt(pieces[1]);
+
+                String type            = pieces[0];
+                String timeUnconverted = pieces[2]; // need to convert this to milliseconds!
+                String filename        = pieces[3];
+                String data            = pieces[4];
+            }
+        } catch (FileNotFoundException e) {
+        }
+    }
+/*
     private void loadButtonClicked() {
         textArea.setText(Globals.FS.load()); 
     }
@@ -113,7 +139,7 @@ public class Main extends JFrame {
     private void clearButtonClicked() {
         Globals.FS.clear();
     }
-
+*/
     private void quitButtonClicked() {
         System.exit(0);
     }
