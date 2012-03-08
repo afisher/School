@@ -100,13 +100,13 @@ public class Main extends JFrame {
     }
 
     private void run() {
-        File file = new File(inputFile);
+        java.io.File file = new java.io.File(inputFile);
 
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] pieces = line.split("\s");
+                String[] pieces = line.split(" ");
 
                 // which logical device to save to -- worry about it later
                 int deviceNum = Integer.parseInt(pieces[1]);
@@ -114,10 +114,26 @@ public class Main extends JFrame {
                 String type            = pieces[0];
                 String timeUnconverted = pieces[2]; // need to convert this to milliseconds!
                 String filename        = pieces[3];
-                String data            = pieces[4];
+                if (type.equals("save")) {
+                    String data        = pieces[4];
+                }
+
+                int timeConverted = timeMillis(timeUnconverted);
             }
         } catch (FileNotFoundException e) {
         }
+    }
+
+    private int timeMillis(String timeStr) {
+        String[] pieces = timeStr.split(":");
+
+        int ret;
+        ret =            Integer.parseInt(pieces[0]);
+        ret = ret*60   + Integer.parseInt(pieces[1]);
+        ret = ret*60   + Integer.parseInt(pieces[2]);
+        ret = ret*1000 + Integer.parseInt(pieces[3]);
+
+        return ret;
     }
 /*
     private void loadButtonClicked() {
