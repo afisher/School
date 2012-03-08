@@ -5,7 +5,9 @@ import java.awt.*;
 import java.io.*;
 
 public class Main extends JFrame {
-    String inputFile = "data.txt";
+    private String inputFile = "data.txt";
+
+    public static PriorityQueue<Event> eventQ = new PriorityQueue<Event>();
 
     /*JButton loadButton;
     JButton saveButton;
@@ -114,11 +116,17 @@ public class Main extends JFrame {
                 String type            = pieces[0];
                 String timeUnconverted = pieces[2]; // need to convert this to milliseconds!
                 String filename        = pieces[3];
-                if (type.equals("save")) {
-                    String data        = pieces[4];
-                }
 
                 int timeConverted = timeMillis(timeUnconverted);
+
+                if (type.equals("save")) {
+                    String data = pieces[4];
+                    // if disk is idle, add SaveEvent to eventQ
+                    // otherwise add it to diskQ...
+                } else if (type.equals("load")) {
+                } else if (type.equals("delete")) {
+                }
+
             }
         } catch (FileNotFoundException e) {
         }
