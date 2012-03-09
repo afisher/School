@@ -6,8 +6,7 @@ import java.io.*;
 
 public class Main extends JFrame {
     private String inputFile = "data.txt";
-
-    public static PriorityQueue<Event> eventQ = new PriorityQueue<Event>();
+    private Simulator simulator;
 
     /*JButton loadButton;
     JButton saveButton;
@@ -104,44 +103,7 @@ public class Main extends JFrame {
     private void run() {
         java.io.File file = new java.io.File(inputFile);
 
-        try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] pieces = line.split(" ");
-
-                // which logical device to save to -- worry about it later
-                int deviceNum = Integer.parseInt(pieces[1]);
-
-                String type            = pieces[0];
-                String timeUnconverted = pieces[2]; // need to convert this to milliseconds!
-                String filename        = pieces[3];
-
-                int timeConverted = timeMillis(timeUnconverted);
-
-                if (type.equals("save")) {
-                    String data = pieces[4];
-                    // if disk is idle, add SaveEvent to eventQ
-                    // otherwise add it to diskQ...
-                } else if (type.equals("load")) {
-                } else if (type.equals("delete")) {
-                }
-
-            }
-        } catch (FileNotFoundException e) {
-        }
-    }
-
-    private int timeMillis(String timeStr) {
-        String[] pieces = timeStr.split(":");
-
-        int ret;
-        ret =            Integer.parseInt(pieces[0]);
-        ret = ret*60   + Integer.parseInt(pieces[1]);
-        ret = ret*60   + Integer.parseInt(pieces[2]);
-        ret = ret*1000 + Integer.parseInt(pieces[3]);
-
-        return ret;
+        simulator = new Simulator(file);
     }
 /*
     private void loadButtonClicked() {
