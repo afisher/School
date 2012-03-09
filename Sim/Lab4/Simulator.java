@@ -2,10 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class Simulator {
+    public static int time;
+
     public static PriorityQueue<Event> eventQ = new PriorityQueue<Event>();
     public static PriorityQueue<Event> diskQ  = new PriorityQueue<Event>();
 
-    public Simulator(java.io.File file) {
+    public static void init(java.io.File file) {
+        time = 0;
+
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
@@ -23,11 +27,11 @@ public class Simulator {
 
                 if (type.equals("save")) {
                     String data = pieces[4];
-                    eventQ.add(new SaveEvent(timeConverted, data));
+                    eventQ.add(new SaveEvent(timeConverted, filename, data));
                 } else if (type.equals("load")) {
-                    // add load event
+                    eventQ.add(new LoadEvent(timeConverted, filename));
                 } else if (type.equals("delete")) {
-                    // add delete event
+                    eventQ.add(new DeleteEvent(timeConverted, filename));
                 }
 
             }
@@ -35,8 +39,16 @@ public class Simulator {
         }
     }
 
+    public static void simulate() {
+        while (!eventQ.isEmpty()) {
+            Event curEvent = eventQ.poll();
+            time = curEvent.getTime();
+            curEvent.simulate();
+        }
+    }
+
     // convert a string representation of time to time in milliseconds
-    private int timeMillis(String timeStr) {
+    public static int timeMillis(String timeStr) {
         String[] pieces = timeStr.split(":");
 
         int ret;

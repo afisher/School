@@ -103,15 +103,16 @@ public class Main extends JFrame {
     private void run() {
         java.io.File file = new java.io.File(inputFile);
 
-        simulator = new Simulator(file);
+        Simulator.init(file);
+        Simulator.simulate();
     }
 /*
     private void loadButtonClicked() {
-        textArea.setText(Globals.FS.load()); 
+        textArea.setText(Globals.FS.load());
     }
 
     private void saveButtonClicked() {
-        Globals.FS.save(textArea.getText()); 
+        Globals.FS.save(textArea.getText());
     }
 
     private void displayButtonClicked() {
