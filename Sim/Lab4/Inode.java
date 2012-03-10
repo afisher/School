@@ -4,10 +4,23 @@ public class Inode extends Sector {
     private Block indirectLink;
     private Block doubleIndirectLink;
 
-    public static final int LINKS_PER_BLOCK = 4; 
+    public static final int LINKS_PER_BLOCK = 4;
 
     public Inode(int n) {
         super(n);
+    }
+
+    public void startStore(String data) {
+        if (data.length() > doubleSizeMax()) {
+            Globals.complain("File too large");
+            return;
+        }
+
+        simulateStore(data);
+    }
+
+    public void simulateStore(String data) {
+        Simulator.inodeSimulateStore(this, data);
     }
 
     public void store(String data) {

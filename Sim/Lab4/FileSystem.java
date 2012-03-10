@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 48; 
+    public static final int NUM_SECTORS = 8;
     public static final int NUM_INODES = 4;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
@@ -58,17 +58,17 @@ public class FileSystem {
         else return "bad file name: " + filename;
     }
 
-    public void save(String s) {
-        if (!willFit(s)) {
+    public void save(String filename, String data) {
+        if (!willFit(data)) {
             Globals.complain("There's not enough free space!");
             return;
         }
 
-        String filename = getFilename();
+        //String filename = getFilename();
         Inode inode = allocateInode();
 
         if (inode != null) {
-            inode.store(s);
+            inode.store(data);
             fileList.add(new File(filename, inode));
         }
     }

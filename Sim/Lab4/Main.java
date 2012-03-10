@@ -105,6 +105,8 @@ public class Main extends JFrame {
 
         Simulator.init(file);
         Simulator.simulate();
+
+        textArea.setText(Globals.FS.toString());
     }
 /*
     private void loadButtonClicked() {

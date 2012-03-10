@@ -2,7 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class Simulator {
-    public static int time;
+    public static long time;
+    public static boolean diskIdle;
+
+    public static int WRITE_TIME = 10; // msec
+    public static int LOAD_TIME  = 10; // msec
 
     public static PriorityQueue<Event> eventQ = new PriorityQueue<Event>();
     public static PriorityQueue<Event> diskQ  = new PriorityQueue<Event>();
@@ -44,6 +48,15 @@ public class Simulator {
             Event curEvent = eventQ.poll();
             time = curEvent.getTime();
             curEvent.simulate();
+        }
+    }
+
+    public static void inodeSimulateStore(Inode inode, String data) {
+        if (diskIdle) {
+            diskIdle = false;
+            eventQ.add(new InodeWriteCompletedEvent(time + WRITE_TIME, inode, data));
+        } else {
+            diskQ.add(new InodeWriteCompletedEvent(0, inode, data));
         }
     }
 

@@ -1,7 +1,7 @@
 public class LoadEvent extends Event {
     private String filename;
 
-    public LoadEvent(int t, String f) {
+    public LoadEvent(long t, String f) {
         super(t);
         filename = f;
     }
