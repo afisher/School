@@ -15,7 +15,7 @@ public class Main extends JFrame {
     JButton clearButton;*/
     JButton quitButton;
 
-    JTextArea textArea;
+    public static JTextArea textArea;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -106,7 +106,7 @@ public class Main extends JFrame {
         Simulator.init(file);
         Simulator.simulate();
 
-        textArea.setText(Globals.FS.toString());
+        //textArea.setText(Globals.FS.toString());
     }
 /*
     private void loadButtonClicked() {

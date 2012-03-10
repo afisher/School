@@ -13,6 +13,7 @@ public class Simulator {
 
     public static void init(java.io.File file) {
         time = 0;
+        diskIdle = true;
 
         try {
             Scanner scanner = new Scanner(file);
@@ -39,6 +40,8 @@ public class Simulator {
                 }
 
             }
+
+            Main.textArea.setText(eventQ.toString());
         } catch (FileNotFoundException e) {
         }
     }
@@ -48,6 +51,9 @@ public class Simulator {
             Event curEvent = eventQ.poll();
             time = curEvent.getTime();
             curEvent.simulate();
+
+            Main.textArea.append("\n\n" + "Event Queue:\n" + eventQ.toString());
+            Main.textArea.append("\n\n" + "Disk Queue:\n" + diskQ.toString());
         }
     }
 

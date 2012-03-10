@@ -11,4 +11,9 @@ public class SaveEvent extends Event {
     public void simulate() {
         Globals.FS.save(filename, data);
     }
+
+    public String toString() {
+        return "SaveEvent   filename = " + filename +
+               "   data = " + data + super.toString() + "\n";
+    }
 }

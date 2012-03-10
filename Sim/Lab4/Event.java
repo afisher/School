@@ -19,4 +19,9 @@ public abstract class Event implements Comparable {
     public int compareTo(Object other) {
         return (int)(time - ((Event)other).getTime());
     }
+
+    public String toString() {
+        return "   scheduled time = " + time +
+               "   current time = " + Simulator.time;
+    }
 }

@@ -19,4 +19,8 @@ public class InodeWriteCompletedEvent extends Event {
             Simulator.eventQ.add(event);
         }
     }
+
+    public String toString() {
+        return "InodeWriteCompletedEvent   data = " + data + super.toString();
+    }
 }
