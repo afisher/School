@@ -14,6 +14,6 @@ public class SaveEvent extends Event {
 
     public String toString() {
         return "SaveEvent   filename = " + filename +
-               "   data = " + data + super.toString() + "\n";
+               "   data = " + data + super.toString();
     }
 }

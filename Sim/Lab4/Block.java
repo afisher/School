@@ -10,13 +10,22 @@ public class Block extends Sector {
         bytes = new byte[BLOCK_LENGTH];
     }
 
-    public void store(String s) {
+    public void startStore(String s) {
         if (s.length() > BLOCK_LENGTH) {
             Globals.complain("That won't fit!");
-        } else {
-            for (int i = 0; i < s.length(); i++) {
-                bytes[i] = (byte)(s.charAt(i));
-            }
+            return;
+        }
+
+        simulateStore(s);
+    }
+
+    public void simulateStore(String s) {
+        Simulator.blockSimulateStore(this, s);
+    }
+
+    public void store(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            bytes[i] = (byte)(s.charAt(i));
         }
     }
 

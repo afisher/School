@@ -41,7 +41,6 @@ public class Simulator {
 
             }
 
-            Main.textArea.setText(eventQ.toString());
         } catch (FileNotFoundException e) {
         }
     }
@@ -52,8 +51,25 @@ public class Simulator {
             time = curEvent.getTime();
             curEvent.simulate();
 
-            Main.textArea.append("\n\n" + "Event Queue:\n" + eventQ.toString());
-            Main.textArea.append("\n\n" + "Disk Queue:\n" + diskQ.toString());
+            Main.textArea.append("\n\n" + "Event Queue:\n");
+            if (!eventQ.isEmpty()) {
+                for (Event e : eventQ) {
+                    Main.textArea.append(e.toString() + "\n");
+                }
+            } else {
+                Main.textArea.append("Empty!\n");
+            }
+
+            Main.textArea.append("\n\n" + "Disk Queue:\n");
+            if (!diskQ.isEmpty()) {
+                for (Event e : diskQ) {
+                    Main.textArea.append(e.toString() + "\n");
+                }
+            } else {
+                Main.textArea.append("Empty!\n");
+            }
+
+            Main.textArea.append("\n==========");
         }
     }
 
@@ -63,6 +79,15 @@ public class Simulator {
             eventQ.add(new InodeWriteCompletedEvent(time + WRITE_TIME, inode, data));
         } else {
             diskQ.add(new InodeWriteCompletedEvent(0, inode, data));
+        }
+    }
+
+    public static void blockSimulateStore(Block block, String data) {
+        if (diskIdle) {
+            diskIdle = false;
+            eventQ.add(new BlockWriteCompletedEvent(time + WRITE_TIME, block, data));
+        } else {
+            diskQ.add(new BlockWriteCompletedEvent(0, block, data));
         }
     }
 

@@ -41,7 +41,8 @@ public class Inode extends Sector {
         if (directLink == null) {
             directLink = Globals.FS.allocateBlock();
         }
-        directLink.store(data);
+        //directLink.store(data);
+        Simulator.blockSimulateStore(directLink, data);
     }
 
     private void storeSingle(String data) {

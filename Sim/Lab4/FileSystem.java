@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 8;
+    public static final int NUM_SECTORS = 16;
     public static final int NUM_INODES = 4;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
@@ -68,7 +68,7 @@ public class FileSystem {
         Inode inode = allocateInode();
 
         if (inode != null) {
-            inode.store(data);
+            inode.startStore(data);
             fileList.add(new File(filename, inode));
         }
     }
