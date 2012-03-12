@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 16;
-    public static final int NUM_INODES = 4;
+    public static final int NUM_SECTORS = 64;
+    public static final int NUM_INODES = 10;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
     private ArrayList<Inode> inodeFreeList = new ArrayList<Inode>();

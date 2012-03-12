@@ -21,6 +21,7 @@ public class InodeWriteCompletedEvent extends Event {
     }
 
     public String toString() {
-        return "InodeWriteCompletedEvent   data = " + data + super.toString();
+        return "InodeWriteCompletedEvent   sector# = " + inode.getNumber() + 
+               "   data = " + data + super.toString();
     }
 }

@@ -90,27 +90,55 @@ public class Inode extends Sector {
 
         doubleIndirectLink = Globals.FS.allocateBlock();
 
+        ArrayList<Block> linkBlocks = new ArrayList<Block>();
+        String doubleLinkData = "";
+
+        ArrayList<ArrayList<Block>> dataBlocks = new ArrayList<ArrayList<Block>>();
+
+        // figure out the bytes to give to the doubleIndirectLink
+        // and its links...
         for (int i = 0; i < LINKS_PER_BLOCK; i++) {
             if (data.length() > start - 1) {
-                Block newBlock = Globals.FS.allocateBlock();
-                doubleIndirectLink.setBlockNumber(i, newBlock.getNumber());
+                Block linkBlock = Globals.FS.allocateBlock();
+                linkBlocks.add(linkBlock);
 
+                doubleLinkData += "" + linkBlock.getNumber();
+
+                dataBlocks.add(new ArrayList<Block>());
+
+                String singleLinkData = ""; 
                 for (int j = 0; j < LINKS_PER_BLOCK; j++) {
                     if (data.length() > start - 1) {
-                        Block dataBlock = Globals.FS.allocateBlock();
+                        Block block = Globals.FS.allocateBlock();
+                        dataBlocks.get(i).add(block);
 
-                        int end = Math.min(start + Block.BLOCK_LENGTH, data.length());
-                        dataBlock.store(data.substring(start, end));
-                        newBlock.setBlockNumber(j, dataBlock.getNumber());
-
-                    } else {
-                        newBlock.setBlockNumber(j, 0);
+                        singleLinkData += "" + block.getNumber();
                     }
 
                     start += Block.BLOCK_LENGTH;
                 }
-            } else {
-                doubleIndirectLink.setBlockNumber(i, 0);
+
+                Simulator.blockSimulateStore(linkBlock, singleLinkData, true);
+            }
+        }
+
+        Simulator.blockSimulateStore(doubleIndirectLink, doubleLinkData, true);
+
+        // reset the start so we can read the data in
+        start = singleSizeMax();
+
+
+        // actually simulate the storing
+        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
+            if (data.length() > start - 1) {
+                for (int j = 0; j < LINKS_PER_BLOCK; j++) {
+                    if (data.length() > start - 1) {
+                        int end = Math.min(start + Block.BLOCK_LENGTH, data.length());
+                        Simulator.blockSimulateStore(dataBlocks.get(i).get(j), data.substring(start, end), false);
+                    }
+
+                    start += Block.BLOCK_LENGTH;
+                }
             }
         }
     }

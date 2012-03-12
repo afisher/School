@@ -33,9 +33,11 @@ public class BlockWriteCompletedEvent extends Event {
 
     public String toString() {
         if (!isLink) {
-            return "BlockWriteCompletedEvent   data = " + data + super.toString();
+            return "BlockWriteCompletedEvent   sector# = " + block.getNumber() + 
+                   "   data = " + data + super.toString();
         } else {
-            return "BlockWriteCompletedEvent   links = " + data + super.toString();
+            return "BlockWriteCompletedEvent   sector# = " + block.getNumber() +
+                   "   links = " + data + super.toString();
         }
     }
 }
