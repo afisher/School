@@ -74,36 +74,26 @@ public class Block extends Sector {
     }
 
     public void loadSingleIndirect() {
-        //String ret = "";
-        
         for (Block b : getBlocks()) {
             Simulator.blockSimulateLoad(b, TYPE_DIRECT);
         }
-
-        //return ret;
     }
 
     public void loadDoubleIndirect() {
-        //String ret = "";
-
         for (Block link : getBlocks()) {
-            Simulator.blockSimulateLoad(link, TYPE_DIRECT);
+            Simulator.blockSimulateLoad(link, TYPE_SINGLE);
 
-            for (Block b : link.getBlocks()) {
+            /*for (Block b : link.getBlocks()) {
                 Simulator.blockSimulateLoad(b, TYPE_DIRECT);
-            }
+            }*/
         }
-
-        //return ret;
     }
 
-/*
     public String toString() {
         return "\nBlock:\n\tnumber = " + number +
                "\n\tbytes = " + loadDirect() +
                "\n";
     }
-*/
 
     public int getBlockNumber(int i) {
         return ((bytes[i * 2] << 8)) | bytes[i * 2 + 1];
@@ -111,7 +101,7 @@ public class Block extends Sector {
 
     public void setBlockNumber(int i, int n) {
         bytes[i * 2]     = (byte)(n >> 8);
-        bytes[i * 2 + 1] = (byte)(n & 0xFF); 
+        bytes[i * 2 + 1] = (byte)(n & 0xFF);
     }
 
     public Block getBlock(int i) {

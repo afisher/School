@@ -56,9 +56,7 @@ public class Simulator {
             curEvent.simulate();
 
             waitTimes.add(new Long(curEvent.getWaitTime()));
-
             printInfo();
-
             printSingleInfo(curEvent);
         }
         printTimeInfo();
@@ -100,8 +98,8 @@ public class Simulator {
 
         long average = total / waitTimes.size();
 
-        Main.textArea.append("\nAverage wait time was " + timeString(average) +
-                             "\nMax wait time was " + timeString(max) +
+        Main.textArea.append("\nAverage wait time was " + average +
+                             "\nMax wait time was " + max +
                              "\nEvents had to wait more than 100ms " + timesWaited + " times.");
     }
 
@@ -151,10 +149,10 @@ public class Simulator {
         String[] pieces = timeStr.split(":");
 
         long ret;
-        ret =          new Long(pieces[0]);
-        ret = ret*60 + new Long(pieces[1]);
-        ret = ret*60 + new Long(pieces[2]);
-        ret = ret*60 + new Long(pieces[3]);
+        ret = new Long(pieces[0]);
+        ret = ret *= 60; ret += new Long(pieces[1]);
+        ret = ret *= 60; ret += new Long(pieces[2]);
+        ret = ret *= 60; ret += new Long(pieces[3]);
 
         return ret;
     }
