@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class FileSystem {
-    public static final int NUM_SECTORS = 64;
-    public static final int NUM_INODES = 10;
+    public static final int NUM_SECTORS = 100;
+    public static final int NUM_INODES = 5;
     public static final int NUM_BLOCKS = NUM_SECTORS - NUM_INODES;
 
     private ArrayList<Inode> inodeFreeList = new ArrayList<Inode>();
@@ -44,8 +44,8 @@ public class FileSystem {
         return blockFreeList.remove(0);
     }
 
-    public String load() {
-        String filename = getFilename();
+    public void load(String filename) {
+        //String filename = getFilename();
 
         Inode inode = null;
         for (File f : fileList) {
@@ -54,8 +54,8 @@ public class FileSystem {
             }
         }
 
-        if (inode != null) return inode.load();
-        else return "bad file name: " + filename;
+        if (inode != null) inode.startLoad();
+        //else return "bad file name: " + filename;
     }
 
     public void save(String filename, String data) {

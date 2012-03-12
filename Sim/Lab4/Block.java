@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 
 public class Block extends Sector {
+    public static final int TYPE_DIRECT = 0;
+    public static final int TYPE_SINGLE = 1;
+    public static final int TYPE_DOUBLE = 2;
+
     public static final int BLOCK_LENGTH = 8;
 
     private byte[] bytes;
@@ -29,7 +33,31 @@ public class Block extends Sector {
         }
     }
 
-    public String loadDirect() {
+    public void startLoadDirect() {
+        simulateLoadDirect();
+    }
+
+    public void startLoadSingleIndirect() {
+        simulateLoadSingleIndirect();
+    }
+
+    public void startLoadDoubleIndirect() {
+        simulateLoadDoubleIndirect();
+    }
+
+    public void simulateLoadDirect() {
+        Simulator.blockSimulateLoad(this, TYPE_DIRECT);
+    }
+
+    public void simulateLoadSingleIndirect() {
+        Simulator.blockSimulateLoad(this, TYPE_SINGLE);
+    }
+
+    public void simulateLoadDoubleIndirect() {
+        Simulator.blockSimulateLoad(this, TYPE_DOUBLE);
+    }
+
+    public String load() {
         String ret = "";
 
         int i = 0;
@@ -41,41 +69,41 @@ public class Block extends Sector {
         return ret;
     }
 
-    public String loadSingleIndirect() {
-        String ret = "";
+    public String loadDirect() {
+        return load();
+    }
 
-        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            int blockNumber = getBlockNumber(i);
+    public void loadSingleIndirect() {
+        //String ret = "";
+        
+        for (Block b : getBlocks()) {
+            Simulator.blockSimulateLoad(b, TYPE_DIRECT);
+        }
 
-            if (blockNumber != 0) {
-                Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i))); 
-                ret += currentBlock.loadDirect();
+        //return ret;
+    }
+
+    public void loadDoubleIndirect() {
+        //String ret = "";
+
+        for (Block link : getBlocks()) {
+            Simulator.blockSimulateLoad(link, TYPE_DIRECT);
+
+            for (Block b : link.getBlocks()) {
+                Simulator.blockSimulateLoad(b, TYPE_DIRECT);
             }
         }
 
-        return ret;
+        //return ret;
     }
 
-    public String loadDoubleIndirect() {
-        String ret = "";
-
-        for (int i = 0; i < Inode.LINKS_PER_BLOCK; i++) {
-            int blockNumber = getBlockNumber(i);
-
-            if (blockNumber != 0) {
-                Block currentBlock = (Block)(Globals.FS.getSector(getBlockNumber(i)));
-                ret += currentBlock.loadSingleIndirect();
-            }
-        }
-
-        return ret;
-    }
-
+/*
     public String toString() {
         return "\nBlock:\n\tnumber = " + number +
                "\n\tbytes = " + loadDirect() +
                "\n";
     }
+*/
 
     public int getBlockNumber(int i) {
         return ((bytes[i * 2] << 8)) | bytes[i * 2 + 1];

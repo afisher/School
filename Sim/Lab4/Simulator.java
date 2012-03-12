@@ -6,7 +6,9 @@ public class Simulator {
     public static boolean diskIdle;
 
     public static int WRITE_TIME = 10; // msec
-    public static int LOAD_TIME  = 10; // msec
+    public static int READ_TIME  = 10; // msec
+
+    public static ArrayList<Long> waitTimes = new ArrayList<Long>();
 
     public static PriorityQueue<Event> eventQ = new PriorityQueue<Event>();
     public static PriorityQueue<Event> diskQ  = new PriorityQueue<Event>();
@@ -28,7 +30,7 @@ public class Simulator {
                 String timeUnconverted = pieces[2];
                 String filename        = pieces[3];
 
-                int timeConverted = timeMillis(timeUnconverted);
+                long timeConverted = timeMillis(timeUnconverted);
 
                 if (type.equals("save")) {
                     String data = pieces[4];
@@ -41,6 +43,7 @@ public class Simulator {
             }
 
             printInfo();
+            Main.textArea.append("\n==========");
 
         } catch (FileNotFoundException e) {
         }
@@ -52,8 +55,13 @@ public class Simulator {
             time = curEvent.getTime();
             curEvent.simulate();
 
+            waitTimes.add(new Long(curEvent.getWaitTime()));
+
             printInfo();
+
+            printSingleInfo(curEvent);
         }
+        printTimeInfo();
     }
 
     public static void printInfo() {
@@ -75,6 +83,30 @@ public class Simulator {
             Main.textArea.append("Empty!\n");
         }
 
+    }
+
+    public static void printTimeInfo() {
+        long max = 0;
+        long total = 0;
+        int timesWaited = 0;
+
+        for (Long t : waitTimes) {
+            if (t > max) max = t;
+
+            total += t;
+
+            if (t > 100) timesWaited++;
+        }
+
+        long average = total / waitTimes.size();
+
+        Main.textArea.append("\nAverage wait time was " + timeString(average) +
+                             "\nMax wait time was " + timeString(max) +
+                             "\nEvents had to wait more than 100ms " + timesWaited + " times.");
+    }
+
+    public static void printSingleInfo(Event event) {
+        Main.textArea.append("\n*** SIMULATING: " + event.toString());
         Main.textArea.append("\n==========");
     }
 
@@ -83,7 +115,7 @@ public class Simulator {
             diskIdle = false;
             eventQ.add(new InodeWriteCompletedEvent(time + WRITE_TIME, inode, data));
         } else {
-            diskQ.add(new InodeWriteCompletedEvent(0, inode, data));
+            diskQ.add(new InodeWriteCompletedEvent(time + WRITE_TIME, inode, data));
         }
     }
 
@@ -92,20 +124,54 @@ public class Simulator {
             diskIdle = false;
             eventQ.add(new BlockWriteCompletedEvent(time + WRITE_TIME, block, data, isLink));
         } else {
-            diskQ.add(new BlockWriteCompletedEvent(0, block, data, isLink));
+            diskQ.add(new BlockWriteCompletedEvent(time + WRITE_TIME, block, data, isLink));
+        }
+    }
+
+    public static void inodeSimulateLoad(Inode inode) {
+        if (diskIdle) {
+            diskIdle = false;
+            eventQ.add(new InodeReadCompletedEvent(time + READ_TIME, inode));
+        } else {
+            diskQ.add(new InodeReadCompletedEvent(time + READ_TIME, inode));
+        }
+    }
+
+    public static void blockSimulateLoad(Block block, int type) {
+        if (diskIdle) {
+            diskIdle = false;
+            eventQ.add(new BlockReadCompletedEvent(time + READ_TIME, block, type));
+        } else {
+            diskQ.add(new BlockReadCompletedEvent(time + READ_TIME, block, type));
         }
     }
 
     // convert a string representation of time to time in milliseconds
-    public static int timeMillis(String timeStr) {
+    public static long timeMillis(String timeStr) {
         String[] pieces = timeStr.split(":");
 
-        int ret;
-        ret =            Integer.parseInt(pieces[0]);
-        ret = ret*60   + Integer.parseInt(pieces[1]);
-        ret = ret*60   + Integer.parseInt(pieces[2]);
-        ret = ret*1000 + Integer.parseInt(pieces[3]);
+        long ret;
+        ret =          new Long(pieces[0]);
+        ret = ret*60 + new Long(pieces[1]);
+        ret = ret*60 + new Long(pieces[2]);
+        ret = ret*60 + new Long(pieces[3]);
 
         return ret;
+    }
+
+    // convert time in milliseconds to a printable time
+    public static String timeString(long timeMs) {
+        long hours = timeMs / (60 * 60 * 60);
+        timeMs = timeMs % (60 * 60 * 60);
+
+        long minutes = timeMs / (60 * 60);
+        timeMs  = timeMs % (60 * 60);
+
+        long seconds = timeMs / (60);
+        timeMs = timeMs % 60;
+
+        long mseconds = timeMs;
+
+        return String.format("%02d:%02d:%02d:%03d", hours, minutes, seconds, mseconds);
     }
 }

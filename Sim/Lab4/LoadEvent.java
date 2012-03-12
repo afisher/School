@@ -7,5 +7,10 @@ public class LoadEvent extends Event {
     }
 
     public void simulate() {
+        Globals.FS.load(filename);
+    }
+
+    public String toString() {
+        return "LoadEvent   filename = " + filename + super.toString();
     }
 }

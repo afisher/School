@@ -1,16 +1,14 @@
-public class InodeWriteCompletedEvent extends Event {
+public class InodeReadCompletedEvent extends Event {
     Inode inode;
-    String data;
 
-    public InodeWriteCompletedEvent(long t, Inode i, String d) {
+    public InodeReadCompletedEvent(long t, Inode i) {
         super(t);
         inode = i;
-        data = d;
-        bufferTime = Simulator.WRITE_TIME;
+        bufferTime = Simulator.READ_TIME;
     }
 
     public void simulate() {
-        inode.store(data);
+        inode.load();
 
         if (Simulator.diskQ.isEmpty()) {
             Simulator.diskIdle = true;
@@ -22,6 +20,6 @@ public class InodeWriteCompletedEvent extends Event {
     }
 
     public String toString() {
-        return "InodeWriteCompletedEvent   sector# = " + inode.getNumber() + super.toString();
+        return "InodeReadCompletedEvent   sector# = " + inode.getNumber() + super.toString();
     }
 }

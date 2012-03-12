@@ -43,7 +43,6 @@ public class Inode extends Sector {
         if (directLink == null) {
             directLink = Globals.FS.allocateBlock();
         }
-        //directLink.store(data);
         Simulator.blockSimulateStore(directLink, data, false);
     }
 
@@ -64,7 +63,7 @@ public class Inode extends Sector {
                 Block block = Globals.FS.allocateBlock();
                 blocks.add(block);
 
-                linkData += "" + block.getNumber();
+                linkData += String.format("%02d", block.getNumber());
             }
         }
 
@@ -77,7 +76,6 @@ public class Inode extends Sector {
             int end   = Math.min(data.length(), Block.BLOCK_LENGTH * (i+2));
 
             if (data.length() > start) {
-                //newBlock.store(data.substring(start, end));
                 Simulator.blockSimulateStore(blocks.get(i), data.substring(start, end), false);
             }
         }
@@ -102,7 +100,7 @@ public class Inode extends Sector {
                 Block linkBlock = Globals.FS.allocateBlock();
                 linkBlocks.add(linkBlock);
 
-                doubleLinkData += "" + linkBlock.getNumber();
+                doubleLinkData += String.format("%02d", linkBlock.getNumber());
 
                 dataBlocks.add(new ArrayList<Block>());
 
@@ -112,7 +110,7 @@ public class Inode extends Sector {
                         Block block = Globals.FS.allocateBlock();
                         dataBlocks.get(i).add(block);
 
-                        singleLinkData += "" + block.getNumber();
+                        singleLinkData += String.format("%02d", block.getNumber());
                     }
 
                     start += Block.BLOCK_LENGTH;
@@ -143,33 +141,41 @@ public class Inode extends Sector {
         }
     }
 
-    public String load() {
+    public void startLoad() {
+        simulateLoad();
+    }
+
+    public void simulateLoad() {
+        Simulator.inodeSimulateLoad(this);
+    }
+
+    public void load() {
         // there's always direct data
-        String ret = loadDirect();
+        loadDirect();
 
         // if there's more data, load single
         if (size > Block.BLOCK_LENGTH) {
-            ret += loadSingleIndirect();
+            loadSingleIndirect();
         }
 
         // if there's still more data, load double
         if (size > singleSizeMax()) {
-            ret += loadDoubleIndirect();
+            loadDoubleIndirect();
         }
 
-        return ret;
+        //return ret;
     }
 
-    private String loadDirect() {
-        return directLink.loadDirect();
+    private void loadDirect() {
+        directLink.startLoadDirect();
     }
 
-    private String loadSingleIndirect() {
-        return indirectLink.loadSingleIndirect(); 
+    private void loadSingleIndirect() {
+        indirectLink.startLoadSingleIndirect(); 
     }
 
-    private String loadDoubleIndirect() {
-        return doubleIndirectLink.loadDoubleIndirect();
+    private void loadDoubleIndirect() {
+        doubleIndirectLink.startLoadDoubleIndirect();
     }
 
     public static int singleSizeMax() {

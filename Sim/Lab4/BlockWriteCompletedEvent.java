@@ -8,6 +8,7 @@ public class BlockWriteCompletedEvent extends Event {
         block = b;
         data = d;
         isLink = l;
+        bufferTime = Simulator.WRITE_TIME;
     }
 
     public void simulate() {
