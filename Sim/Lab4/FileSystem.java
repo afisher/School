@@ -73,8 +73,8 @@ public class FileSystem {
         }
     }
 
-    public void delete() {
-        String filename = getFilename();
+    public void delete(String filename) {
+        //String filename = getFilename();
 
         File file = null;
         for (File f : fileList) {

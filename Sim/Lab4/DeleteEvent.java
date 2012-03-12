@@ -7,5 +7,10 @@ public class DeleteEvent extends Event {
     }
 
     public void simulate() {
+        Globals.FS.delete(filename); 
+    }
+
+    public String toString() {
+        return "DeleteEvent   filename = " + filename + super.toString();
     }
 }
