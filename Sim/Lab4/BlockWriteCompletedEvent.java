@@ -1,15 +1,26 @@
 public class BlockWriteCompletedEvent extends Event {
-    Block block;
-    String data;
+    private Block block;
+    private String data;
+    private boolean isLink;
 
-    public BlockWriteCompletedEvent(long t, Block b, String d) {
+    public BlockWriteCompletedEvent(long t, Block b, String d, boolean l) {
         super(t);
         block = b;
         data = d;
+        isLink = l;
     }
 
     public void simulate() {
-        block.store(data);
+        if (!isLink) {
+            block.store(data);
+        } else {
+            for (int i = 0; i < Inode.LINKS_PER_BLOCK * 2; i+=2) {
+                if (i < data.length()) {
+                    int num = Integer.parseInt(data.substring(i, Math.min(data.length(), i+2)));
+                    block.setBlockNumber(i % 2, num);
+                }
+            }
+        }
 
         if (Simulator.diskQ.isEmpty()) {
             Simulator.diskIdle = true;
@@ -21,7 +32,11 @@ public class BlockWriteCompletedEvent extends Event {
     }
 
     public String toString() {
-        return "BlockWriteCompletedEvent   data = " + data + super.toString();
+        if (!isLink) {
+            return "BlockWriteCompletedEvent   data = " + data + super.toString();
+        } else {
+            return "BlockWriteCompletedEvent   links = " + data + super.toString();
+        }
     }
 }
 

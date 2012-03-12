@@ -10,17 +10,17 @@ public class Block extends Sector {
         bytes = new byte[BLOCK_LENGTH];
     }
 
-    public void startStore(String s) {
+    public void startStore(String s, boolean isLink) {
         if (s.length() > BLOCK_LENGTH) {
             Globals.complain("That won't fit!");
             return;
         }
 
-        simulateStore(s);
+        simulateStore(s, isLink);
     }
 
-    public void simulateStore(String s) {
-        Simulator.blockSimulateStore(this, s);
+    public void simulateStore(String s, boolean isLink) {
+        Simulator.blockSimulateStore(this, s, isLink);
     }
 
     public void store(String s) {

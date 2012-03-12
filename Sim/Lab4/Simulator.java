@@ -38,8 +38,9 @@ public class Simulator {
                 } else if (type.equals("delete")) {
                     eventQ.add(new DeleteEvent(timeConverted, filename));
                 }
-
             }
+
+            printInfo();
 
         } catch (FileNotFoundException e) {
         }
@@ -51,26 +52,30 @@ public class Simulator {
             time = curEvent.getTime();
             curEvent.simulate();
 
-            Main.textArea.append("\n\n" + "Event Queue:\n");
-            if (!eventQ.isEmpty()) {
-                for (Event e : eventQ) {
-                    Main.textArea.append(e.toString() + "\n");
-                }
-            } else {
-                Main.textArea.append("Empty!\n");
-            }
-
-            Main.textArea.append("\n\n" + "Disk Queue:\n");
-            if (!diskQ.isEmpty()) {
-                for (Event e : diskQ) {
-                    Main.textArea.append(e.toString() + "\n");
-                }
-            } else {
-                Main.textArea.append("Empty!\n");
-            }
-
-            Main.textArea.append("\n==========");
+            printInfo();
         }
+    }
+
+    public static void printInfo() {
+        Main.textArea.append("\n\n" + "Event Queue:\n");
+        if (!eventQ.isEmpty()) {
+            for (Event e : eventQ) {
+                Main.textArea.append(e.toString() + "\n");
+            }
+        } else {
+            Main.textArea.append("Empty!\n");
+        }
+
+        Main.textArea.append("\n\n" + "Disk Queue:\n");
+        if (!diskQ.isEmpty()) {
+            for (Event e : diskQ) {
+                Main.textArea.append(e.toString() + "\n");
+            }
+        } else {
+            Main.textArea.append("Empty!\n");
+        }
+
+        Main.textArea.append("\n==========");
     }
 
     public static void inodeSimulateStore(Inode inode, String data) {
@@ -82,12 +87,12 @@ public class Simulator {
         }
     }
 
-    public static void blockSimulateStore(Block block, String data) {
+    public static void blockSimulateStore(Block block, String data, boolean isLink) {
         if (diskIdle) {
             diskIdle = false;
-            eventQ.add(new BlockWriteCompletedEvent(time + WRITE_TIME, block, data));
+            eventQ.add(new BlockWriteCompletedEvent(time + WRITE_TIME, block, data, isLink));
         } else {
-            diskQ.add(new BlockWriteCompletedEvent(0, block, data));
+            diskQ.add(new BlockWriteCompletedEvent(0, block, data, isLink));
         }
     }
 

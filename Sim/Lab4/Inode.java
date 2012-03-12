@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Inode extends Sector {
     private int size;
     private Block directLink;
@@ -42,7 +44,7 @@ public class Inode extends Sector {
             directLink = Globals.FS.allocateBlock();
         }
         //directLink.store(data);
-        Simulator.blockSimulateStore(directLink, data);
+        Simulator.blockSimulateStore(directLink, data, false);
     }
 
     private void storeSingle(String data) {
@@ -50,15 +52,33 @@ public class Inode extends Sector {
 
         indirectLink = Globals.FS.allocateBlock();
 
-        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        String linkData = "";
 
+        // figure out the bytes to give to the link
+        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
             int start = Block.BLOCK_LENGTH * (i+1);
             int end   = Math.min(data.length(), Block.BLOCK_LENGTH * (i+2));
 
             if (data.length() > start) {
-                Block newBlock = Globals.FS.allocateBlock();
-                newBlock.store(data.substring(start, end));
-                indirectLink.setBlockNumber(i, newBlock.getNumber());
+                Block block = Globals.FS.allocateBlock();
+                blocks.add(block);
+
+                linkData += "" + block.getNumber();
+            }
+        }
+
+        // simulate storing the indirect link
+        Simulator.blockSimulateStore(indirectLink, linkData, true);
+
+        // simulate storing the blocks
+        for (int i = 0; i < LINKS_PER_BLOCK; i++) {
+            int start = Block.BLOCK_LENGTH * (i+1);
+            int end   = Math.min(data.length(), Block.BLOCK_LENGTH * (i+2));
+
+            if (data.length() > start) {
+                //newBlock.store(data.substring(start, end));
+                Simulator.blockSimulateStore(blocks.get(i), data.substring(start, end), false);
             }
         }
     }
