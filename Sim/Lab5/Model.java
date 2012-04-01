@@ -42,9 +42,9 @@ public class Model {
         return (int) (Math.random() * max);
     }
 
-    public void paint(Graphics g) {
+    /*public void paint(Graphics g) {
         theRoad.paint(g);
-    }
+    }*/
 
     public void moveVehicles() {
         try {

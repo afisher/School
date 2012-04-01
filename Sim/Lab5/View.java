@@ -24,11 +24,13 @@ public class View extends JFrame {
     final static int OWN = 1;
     final static int AVE = 2;
     final static int MAX = 3;
-    int driverType = IDEE;
+    //int driverType = IDEE;
     int count; // count the cars?
 
-    JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
-    final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 1, 300, 50)); 
+    private JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
+    private final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 1, 300, 50)); 
+    private static final Object[] typeNames = {"Idee", "Own", "Average", "MaxHeadRoom"};
+    private final JComboBox driverTypeComboBox = new JComboBox(typeNames);
 
     int randSpeed() {
         return 50 + rand(25);
@@ -123,6 +125,7 @@ public class View extends JFrame {
         startButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+                int driverType = driverTypeComboBox.getSelectedIndex();
                 Random randGen = new Random();
                 for (int i = 0; i < (Integer)(numCarsSpinner.getValue()); i++) {
                     Vehicle newVehicle;
@@ -148,6 +151,7 @@ public class View extends JFrame {
         panel.add(numCarsLabel);
         panel.add(numCarsSpinner);
         panel.add(driverTypeLabel);
+        panel.add(driverTypeComboBox);
         panel.add(startButton);
         panel.add(stopButton);
 
@@ -178,9 +182,9 @@ public class View extends JFrame {
         paint(g);
     }
 
-    public void paint(Graphics g) {         // let the Model paint itself ?!
+    /*public void paint(Graphics g) {         // let the Model paint itself ?!
         myModel.paint(g);
-    }
+    }*/
 
     Color randColor() {
         return new Color(getRand(256), getRand(256), getRand(256));

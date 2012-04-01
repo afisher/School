@@ -15,7 +15,6 @@ import java.awt.*;
 import java.util.*;
 import java.applet.*;
 import javax.swing.*;
-import java.awt.image.BufferStrategy;
 
 public class Road extends JFrame {
 
@@ -23,6 +22,7 @@ public class Road extends JFrame {
     Controller a;
     int numLanes;
     Vector theLanes;
+    RoadPanel myPanel;
 
     Controller getController() {
         return a;
@@ -41,8 +41,9 @@ public class Road extends JFrame {
             theLanes.addElement(new Lane(this, i - 1));
         }
         resize(View.WIDTH, View.HEIGHT);
+        myPanel = new RoadPanel(theLanes);
+        add(myPanel);
         setVisible(true);
-        createBufferStrategy(2);
     }
 
     public Road(Controller theCtrllr, Vehicle aVehicle, int nLanes) {
@@ -79,22 +80,7 @@ public class Road extends JFrame {
 
     boolean noCars=false;
     public void paint(Graphics g) {
-        Dimension d = getSize();
-
-        // Double buffering.  
-        /*boolean offScreening = true; // demo, set to false to see without
-        if (offScreening) {
-            if (firstTime) {  // only create the image once
-                offScreenImage = a.createImage(d.width, d.height);
-                otherG = offScreenImage.getGraphics();
-                firstTime = false;
-            }
-
-            doTheDrawing(otherG, d);
-            g.drawImage(offScreenImage, 0, 0, this);
-        } else {*/
-            doTheDrawing(g, d);
-        //}
+        myPanel.repaint();
     }
 
     String throughput() {
@@ -111,22 +97,6 @@ public class Road extends JFrame {
 
     String stats() {
         return "Ave speed (last xx steps)=" + aveSpeed() + " throughput(xx steps)'" + throughput();
-    }
-
-    void doTheDrawing(Graphics g, Dimension d) {
-        int bottom = d.height - 50;
-        int laneWidth = 10;
-
-        g.setColor(Color.white);
-        g.fillRect(0, 100, d.width, d.height);
-        g.setColor(Color.black);
-
-        g.drawLine(0, bottom, d.width, bottom);
-        for (int i = 0; i < theLanes.size(); i++) { // paint each lane
-            g.setColor(Color.black);
-            g.drawLine(0, bottom - (i + 1) * laneWidth, d.width, bottom - (i + 1) * laneWidth);
-            ((Lane) theLanes.elementAt(i)).paint(g, bottom - (i + 1) * laneWidth + 2);
-        }
     }
 
     public void update(Graphics g) {
