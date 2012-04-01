@@ -11,13 +11,13 @@ class MaxHeadRoom extends Driver {
     
    int timeUntilCanChangeLanes;            // to prevent cars from jittering back and forth
     
-    MaxHeadRoom(String n, Vehicle c, double p) {
-        super(n, c, p);
+    MaxHeadRoom(Vehicle c, double p) {
+        super(c, p);
         myVehicle.setColor(Color.green);
     }
 
     public String toString () {
-        return "Average Driver=" + name;
+        return "MaxHeadRoom Driver";
     }
 
     public double speedAdjustment() {

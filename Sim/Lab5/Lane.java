@@ -50,7 +50,6 @@ public class Lane {
         
         for (int i = vehicles.size() - 1; i >= 0; i--) {
             Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
-            tp += theVehicle.getThrough();
         }
 
         return tp;

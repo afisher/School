@@ -10,20 +10,25 @@ Modified for Phase 1 of Lab 7: 11/11/00
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
+import java.util.Random;
 
-public class View extends Panel {
+public class View extends JFrame {
     Model myModel;
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 300;
-    Button addButton, maxButton, iOwnButton, ideeButton;
-    Button aveButton, stopButton, startButton;
-    TextArea theTA = new TextArea();
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 200;
+    JButton addButton, maxButton, iOwnButton, ideeButton;
+    JButton aveButton, stopButton, startButton;
+    //TextArea theTA = new TextArea();
     final static int IDEE = 0;
     final static int OWN = 1;
     final static int AVE = 2;
     final static int MAX = 3;
     int driverType = IDEE;
     int count; // count the cars?
+
+    JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
+    final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 1, 300, 50)); 
 
     int randSpeed() {
         return 50 + rand(25);
@@ -35,17 +40,34 @@ public class View extends Panel {
 
     public View(Model m) {
         myModel = m;
-        addButton = new Button("add 100 cars");
-        add(addButton);
-        addButton.addActionListener(new ActionListener() {
 
+        JPanel panel = new JPanel();
+
+        JLabel numLanesLabel = new JLabel("Num lanes:");
+        JLabel numCarsLabel = new JLabel("Num cars:");
+        JLabel driverTypeLabel = new JLabel("Driver type:");
+
+
+        /*addButton = new Button("add 100 cars");
+        add(addButton);
+
+        addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 count += 100;
-                theTA.append("count=" + count);
+                //theTA.append("count=" + count);
                 for (int i = 0; i < 100; i++) {
-                    Car newCar = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
-                    myModel.addVehicle(newCar);
-                    newCar.setPreferredLaneIf();  // if idee fixee
+                    Vehicle newVehicle;
+                    int r = rand(10);
+
+                    if (r != 0) {
+                        newVehicle = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                    } else {
+                        newVehicle = new Semi(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                    }
+
+                    //Car newCar = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                    myModel.addVehicle(newVehicle);
+                    newVehicle.setPreferredLaneIf();  // if idee fixee
                 }
             }
         });
@@ -85,8 +107,9 @@ public class View extends Panel {
                 driverType = IDEE;
             }
         });
+        */
 
-        stopButton = new Button("exit");
+        stopButton = new JButton("exit");
         add(stopButton);
         stopButton.addActionListener(new ActionListener() {
 
@@ -95,14 +118,43 @@ public class View extends Panel {
             }
         });
 
-        startButton = new Button("start");
+        startButton = new JButton("start");
         add(startButton);
         startButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+                Random randGen = new Random();
+                for (int i = 0; i < (Integer)(numCarsSpinner.getValue()); i++) {
+                    Vehicle newVehicle;
+                    int r = randGen.nextInt(10);
+
+                    if (r != 0) {
+                        newVehicle = new Car(randLoc(), byDriverType(driverType), randSpeed(), driverType);
+                    } else {
+                        newVehicle = new Semi(randLoc(), byDriverType(driverType), randSpeed(), driverType);
+                    }
+
+                    //Car newCar = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                    myModel.addVehicle(newVehicle);
+                    newVehicle.setPreferredLaneIf();  // if idee fixee
+                }
+
                 myModel.theController.start();
             }
         });
+
+        panel.add(numLanesLabel);
+        panel.add(numLanesSpinner);
+        panel.add(numCarsLabel);
+        panel.add(numCarsSpinner);
+        panel.add(driverTypeLabel);
+        panel.add(startButton);
+        panel.add(stopButton);
+
+        add(panel);
+
+        pack();
+        setVisible(true);
         //add(theTA);
 
     }
@@ -135,11 +187,14 @@ public class View extends Panel {
     }
 
     int randLoc() {
-        System.out.println("shere" + (int) (Math.random() * WIDTH));
         return (int) (Math.random() * WIDTH);
     }
 
     int getRand(int max) {
         return (int) (Math.random() * max);
+    }
+
+    public int numCars() {
+        return (Integer)(numCarsSpinner.getValue());
     }
 }

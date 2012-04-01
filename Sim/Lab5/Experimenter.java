@@ -8,8 +8,9 @@
 */
 import java.awt.*;
 import java.util.*;
+import javax.swing.*;
 
-public class Experimenter extends Frame {
+public class Experimenter /*extends JFrame*/ {
     Controller theController;
 
     public Experimenter() {
@@ -17,17 +18,17 @@ public class Experimenter extends Frame {
         theController.init();
         //display(theController);
         //theController.start();
-        setLayout(new BorderLayout());
+        /*setLayout(new BorderLayout());
         add(theController);
         System.out.println("inited!");
-        setBounds(30,100,1200,300);
-        show();
+        setBounds(30,100,1280,200);
+        setVisible(true);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 System.exit(0);
             }
-        });
+        });*/
     }
 
     public static void main(String [] adsf) {

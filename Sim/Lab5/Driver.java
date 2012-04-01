@@ -11,14 +11,12 @@ abstract public class Driver {
     static final int ACCELERATE = 2;
     static final int NO_MORE_OFTEN=10;
 
-    String name;
     Vehicle myVehicle;
     double preferredSpeed;
     double getPreferredSpeed() {return preferredSpeed;}
     Lane preferredLane;
 
-    Driver(String n, Vehicle c, double p) {
-        name = n;
+    Driver(Vehicle c, double p) {
         myVehicle = c;
         preferredSpeed = p;
     }
@@ -28,7 +26,7 @@ abstract public class Driver {
     }
     
     public String toString () {
-        return "Driver=" + name;
+        return "Driver";
     }
 
     public abstract double speedAdjustment();

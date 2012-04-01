@@ -10,13 +10,13 @@ class IOwnTheRoad extends Driver {
     
     int timeUntilCanChangeLanes;            // to prevent cars from jittering back and forth
     
-    IOwnTheRoad(String n, Vehicle c, double p) {
-        super(n, c, p);
+    IOwnTheRoad(Vehicle c, double p) {
+        super(c, p);
         myVehicle.setColor(Color.black);
     }
 
     public String toString () {
-        return "Average Driver=" + name;
+        return "Average Driver";
     }
 
     public double speedAdjustment() {

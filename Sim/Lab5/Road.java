@@ -14,8 +14,10 @@ Modified: JRL 11/10/00 to only create the offScreen image once.
 import java.awt.*;
 import java.util.*;
 import java.applet.*;
+import javax.swing.*;
+import java.awt.image.BufferStrategy;
 
-public class Road extends Component {
+public class Road extends JFrame {
 
     int count = 0;
     Controller a;
@@ -39,6 +41,8 @@ public class Road extends Component {
             theLanes.addElement(new Lane(this, i - 1));
         }
         resize(View.WIDTH, View.HEIGHT);
+        setVisible(true);
+        createBufferStrategy(2);
     }
 
     public Road(Controller theCtrllr, Vehicle aVehicle, int nLanes) {
@@ -78,7 +82,7 @@ public class Road extends Component {
         Dimension d = getSize();
 
         // Double buffering.  
-        boolean offScreening = true; // demo, set to false to see without
+        /*boolean offScreening = true; // demo, set to false to see without
         if (offScreening) {
             if (firstTime) {  // only create the image once
                 offScreenImage = a.createImage(d.width, d.height);
@@ -88,9 +92,9 @@ public class Road extends Component {
 
             doTheDrawing(otherG, d);
             g.drawImage(offScreenImage, 0, 0, this);
-        } else {
+        } else {*/
             doTheDrawing(g, d);
-        }
+        //}
     }
 
     String throughput() {
@@ -114,14 +118,9 @@ public class Road extends Component {
         int laneWidth = 10;
 
         g.setColor(Color.white);
-        g.fillRect(0, 0, d.width, d.height);
+        g.fillRect(0, 100, d.width, d.height);
         g.setColor(Color.black);
-        if (noCars) {
-            g.drawString(stats(), 30, 30);
-            return;
-        }
 
-        g.drawString(stats(), 30, 30);
         g.drawLine(0, bottom, d.width, bottom);
         for (int i = 0; i < theLanes.size(); i++) { // paint each lane
             g.setColor(Color.black);
@@ -137,12 +136,12 @@ public class Road extends Component {
     public void moveVehicles() {
         for (int i = 0; i < theLanes.size(); i++) {
             ((Lane) theLanes.elementAt(i)).moveVehicles();
-        } // for
+        }
     }
 
     public void clear() {
         for (int i = 0; i < theLanes.size(); i++) {
             ((Lane) theLanes.elementAt(i)).clear();
-        } // for
+        }
     }
 }

@@ -12,8 +12,8 @@ class IdeeFixee extends Driver {
     int timeUntilCanChangeLanes;            // to prevent cars from jittering back and forth
     Lane myPreferredLane;
     
-    IdeeFixee(String n, Vehicle c, double p) {
-        super(n, c, p);
+    IdeeFixee(Vehicle c, double p) {
+        super(c, p);
         myVehicle.setColor(Color.red);
     }
 
@@ -32,7 +32,7 @@ class IdeeFixee extends Driver {
     }
     
     public String toString () {
-        return "IdeeFixee Driver=" + name;
+        return "IdeeFixee Driver";
     }
 
     public double speedAdjustment() {

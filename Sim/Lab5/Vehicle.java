@@ -16,12 +16,7 @@ public abstract class Vehicle {
     double speed, location;
     Lane myLane;
     Driver myDriver;
-    Statistics stats;
     
-    int getThrough() {
-        return stats.throughput;
-    }
-
     Driver getDriver() {
         return myDriver;
     }
@@ -41,19 +36,17 @@ public abstract class Vehicle {
     Vehicle() {
     }
 
-    public Vehicle(int pos, Color c, double ps, String name, Statistics s) {
-        stats = s;
+    public Vehicle(int pos, Color c, double ps, int driverType) {
         location = pos;
         color = c;
-        int driverType = stats.getDriverType();
         if (driverType == View.IDEE) {
-            myDriver = new IdeeFixee(name, this, ps);
+            myDriver = new IdeeFixee(this, ps);
         } else if (driverType == View.MAX) {
-            myDriver = new MaxHeadRoom(name, this, ps);
+            myDriver = new MaxHeadRoom(this, ps);
         } else if (driverType == View.OWN) {
-            myDriver = new IOwnTheRoad(name, this, ps);
+            myDriver = new IOwnTheRoad(this, ps);
         } else {
-            myDriver = new AverageDriver(name, this, ps);
+            myDriver = new AverageDriver(this, ps);
         }
     }
 
@@ -73,27 +66,22 @@ public abstract class Vehicle {
         return color;
     }
 
-    void updateStats() {
-        if (through) {
-            stats.incThrough();
-        }
-        if (fastEnough) {
-            stats.incFastEnough();
-        }
+    protected void moveForward() {
+        location += speed / 10;
     }
+
     boolean through, fastEnough;
     int SLOP = 5;
 
     public void move() {
         fastEnough = myDriver.getPreferredSpeed() - speed < SLOP;
         through = false;
-        location += speed / 10;           // Um, so they go slowly enough?
+        //location += speed / 10;           // Um, so they go slowly enough?
+        moveForward();
         if (location > View.WIDTH) {    // A loop!
             location = 0;
             through = true;
         }
-
-        updateStats();
 
         speed += myDriver.speedAdjustment();        // All decisions are made by the driver.
         if (speed < 0) {

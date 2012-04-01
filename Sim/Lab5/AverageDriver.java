@@ -11,13 +11,13 @@ import java.awt.*;
 class AverageDriver extends Driver {
     int timeUntilCanChangeLanes; // to prevent cars from jittering back and forth
 
-    AverageDriver(String n, Vehicle c, double p) {
-        super(n, c, p);
+    AverageDriver(Vehicle c, double p) {
+        super(c, p);
         myVehicle.setColor(Color.blue);
     }
 
     public String toString () {
-        return "Average Driver=" + name;
+        return "Average Driver";
     }
 
     public double speedAdjustment() {
