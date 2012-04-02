@@ -33,12 +33,12 @@ public class CrazyDriver extends Driver {
 
     public Lane getNewLane() {
         Lane returnMe=null;
-        
+
         double speed = myVehicle.getSpeed();
         timeUntilCanChangeLanes--;
-        /*if (timeUntilCanChangeLanes > 0)
-            return null;  // i.e. not change lanes now*/
-        
+        if (timeUntilCanChangeLanes > 0)
+            return null;  // i.e. not change lanes now
+
         Lane myLane = myVehicle.getLane();
         Lane nextRight = myLane.getRoad().getNextLaneRight(myLane);
         Lane nextLeft = myLane.getRoad().getNextLaneLeft(myLane);
@@ -47,26 +47,28 @@ public class CrazyDriver extends Driver {
         double closestSafeDistance = safeDistance(speed);
 
         double ncaR=0, ncaL=0, ncbL=0, ncbR=0;
-        boolean canGoL=false, canGoR=false;     
+        boolean canGoL=false, canGoR=false;
         if (nextLeft != null) {         // move left to pass
             ncaL = nextLeft.nearestVehicleAhead(myVehicle);
             ncbL = nextLeft.nearestVehicleBehind(myVehicle);
-            canGoL = canGo(ncaL, ncbL, closestSafeDistance);
+            canGoL = canGo(ncaL, ncbL, closestSafeDistance)
+                      || nextLeft.vehicles.isEmpty();
         }
         if (nextRight != null) {        // move right if I can
             ncaR = nextRight.nearestVehicleAhead(myVehicle);
             ncbR = nextRight.nearestVehicleBehind(myVehicle);
-            canGoR = canGo(ncaR, ncbR, closestSafeDistance);
+            canGoR = canGo(ncaR, ncbR, closestSafeDistance)
+                      || nextRight.vehicles.isEmpty();
         }
-        
+
         // the variable are all set, so now decide what to do
-        if (canGoR) {
-            returnMe = nextRight;
-        }
-        else if (canGoL) {
+        if (canGoL) {
             returnMe = nextLeft;
         }
-        
+        else if (canGoR) {
+            returnMe = nextRight;
+        }
+
         if (returnMe != null) {
             timeUntilCanChangeLanes = NO_MORE_OFTEN;
         }

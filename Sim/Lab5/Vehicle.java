@@ -44,8 +44,10 @@ public abstract class Vehicle {
             myDriver = new MaxHeadRoom(this, ps);
         } else if (driverType == View.OWN) {
             myDriver = new IOwnTheRoad(this, ps);
-        } else {
+        } else if (driverType == View.AVE) {
             myDriver = new AverageDriver(this, ps);
+        } else {
+            myDriver = new CrazyDriver(this, ps);
         }
     }
 

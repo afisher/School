@@ -26,7 +26,6 @@ class Car extends Vehicle {
     
     public Car(int pos, Color c, double ps) {
         super(pos, c, ps, View.AVE);
-        System.out.println("Car!");
         myImage = aveImage;
     }
 

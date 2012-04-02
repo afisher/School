@@ -9,7 +9,6 @@ public class RoadPanel extends JPanel {
     static int width = 3000;
 
     public RoadPanel(ArrayList<Lane> l) {
-        //resize(width, View.HEIGHT);
         setPreferredSize(new Dimension(width, View.HEIGHT-100));
         setVisible(true);
 

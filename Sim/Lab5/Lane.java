@@ -47,7 +47,7 @@ public class Lane {
 
     int throughput() {
         int tp = 0;
-        
+
         for (int i = vehicles.size() - 1; i >= 0; i--) {
             Vehicle theVehicle = (Vehicle) vehicles.get(i);
         }
@@ -63,7 +63,7 @@ public class Lane {
     }
 
     public double nearestVehicleAhead(Vehicle thisVehicle) {
-        double minDistance = 500;
+        double minDistance = 999999;
         double loc = thisVehicle.getLocation();
 
         for (int i = vehicles.size() - 1; i >= 0; i--) {
@@ -80,7 +80,7 @@ public class Lane {
     }
 
     public double nearestVehicleBehind(Vehicle thisVehicle) {
-        double minDistance = 500;
+        double minDistance = 999999;
         double loc = thisVehicle.getLocation();
 
         for (int i = vehicles.size() - 1; i >= 0; i--) {
@@ -98,8 +98,10 @@ public class Lane {
 
     public void paint(Graphics g, int h) {
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.get(i);
-            theVehicle.paint(g, h);
+            if (i < vehicles.size()) {
+                Vehicle theVehicle = (Vehicle) vehicles.get(i);
+                theVehicle.paint(g, h);
+            }
         }
     }
 }
