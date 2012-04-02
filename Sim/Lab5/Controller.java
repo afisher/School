@@ -44,6 +44,7 @@ public class Controller {
                     try {
                         Thread.sleep(40);       // delay if nto running batch
                         theModel.moveVehicles();
+                        theView.repaint();
                     } catch (Exception e) {
                         System.out.println("oops!" + e);
                     }

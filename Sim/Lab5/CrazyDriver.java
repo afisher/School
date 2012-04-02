@@ -1,22 +1,17 @@
-/* IOwnTheRoad.java
-
-    Stays in current lane unless not going fast enough.
-    
-    Author: JRL, 11/11/00
-*/
+// switches lanes whenever it can
 import java.awt.*;
 
-class IOwnTheRoad extends Driver {
+public class CrazyDriver extends Driver {
     
     int timeUntilCanChangeLanes; // to prevent cars from jittering back and forth
     
-    IOwnTheRoad(Vehicle c, double p) {
+    CrazyDriver(Vehicle c, double p) {
         super(c, p);
-        myVehicle.setColor(Color.black);
+        myVehicle.setColor(Color.pink);
     }
 
     public String toString () {
-        return "Average Driver";
+        return "Crazy Driver";
     }
 
     public double speedAdjustment() {
@@ -65,13 +60,13 @@ class IOwnTheRoad extends Driver {
         }
         
         // the variable are all set, so now decide what to do
-        if (speed < preferredSpeed-5) {
+       // if (speed < preferredSpeed-5) {
             if (canGoR) {
                 returnMe = nextRight;
             }
             else if (canGoL)
                 returnMe = nextLeft;
-        }
+        //}
         
         if (returnMe != null) {
             timeUntilCanChangeLanes = NO_MORE_OFTEN;

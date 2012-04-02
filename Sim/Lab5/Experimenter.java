@@ -10,36 +10,15 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Experimenter /*extends JFrame*/ {
+public class Experimenter {
     Controller theController;
 
     public Experimenter() {
         theController = new Controller(this);
         theController.init();
-        //display(theController);
-        //theController.start();
-        /*setLayout(new BorderLayout());
-        add(theController);
-        System.out.println("inited!");
-        setBounds(30,100,1280,200);
-        setVisible(true);
-
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                System.exit(0);
-            }
-        });*/
     }
 
     public static void main(String [] adsf) {
         new Experimenter();
     }
-
-    /*public void finishedSir(Vector stats) {
-        MyWriter out = new MyWriter();
-        System.out.println("finished!");
-        out.println(Statistics.toString(stats));
-        System.out.println(Statistics.toString(stats));
-        out.close();
-    }*/
 }

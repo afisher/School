@@ -6,6 +6,7 @@ public class Semi extends Vehicle {
     static Image ownImage = Toolkit.getDefaultToolkit().createImage("semi_own.png");
     static Image aveImage = Toolkit.getDefaultToolkit().createImage("semi_ave.png");
     static Image maxImage = Toolkit.getDefaultToolkit().createImage("semi_max.png");
+    static Image crazyImage = Toolkit.getDefaultToolkit().createImage("semi_crazy.png");
 
     private Image myImage;
 
@@ -22,6 +23,7 @@ public class Semi extends Vehicle {
             case View.OWN: myImage = ownImage; break;
             case View.AVE: myImage = aveImage; break;
             case View.MAX: myImage = maxImage; break;
+            case View.CRAZY: myImage = crazyImage; break;
             default: myImage = aveImage; break;
         }
     }

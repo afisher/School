@@ -18,6 +18,7 @@ class Car extends Vehicle {
     static Image ownImage = Toolkit.getDefaultToolkit().createImage("car_own.png");
     static Image aveImage = Toolkit.getDefaultToolkit().createImage("car_ave.png");
     static Image maxImage = Toolkit.getDefaultToolkit().createImage("car_max.png");
+    static Image crazyImage = Toolkit.getDefaultToolkit().createImage("car_crazy.png");
 
     private Image myImage;
     
@@ -37,6 +38,7 @@ class Car extends Vehicle {
             case View.OWN: myImage = ownImage; break;
             case View.AVE: myImage = aveImage; break;
             case View.MAX: myImage = maxImage; break;
+            case View.CRAZY: myImage = crazyImage; break;
             default: myImage = aveImage; break;
         }
     }

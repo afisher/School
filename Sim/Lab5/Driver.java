@@ -33,7 +33,7 @@ abstract public class Driver {
     public abstract Lane getNewLane();
     
     public double safeDistance (double speed) {
-        return speed/2;     // Completely arbitrary
+        return speed;     // Completely arbitrary
     }
     
 }

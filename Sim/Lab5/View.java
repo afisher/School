@@ -16,19 +16,20 @@ import java.util.Random;
 public class View extends JFrame {
     Model myModel;
     public static final int WIDTH = 1280;
-    public static final int HEIGHT = 200;
+    public static final int HEIGHT = 160;
     JButton addButton, maxButton, iOwnButton, ideeButton;
     JButton aveButton, stopButton, startButton, clearButton;
     final static int IDEE = 0;
     final static int OWN = 1;
     final static int AVE = 2;
     final static int MAX = 3;
+    final static int CRAZY = 4;
     int count; // count the cars?
 
     private JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
     private final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 0, 300, 50)); 
     private final JSpinner numSemisSpinner  = new JSpinner(new SpinnerNumberModel(10, 0, 300, 10)); 
-    private static final Object[] typeNames = {"Idee", "Own", "Average", "MaxHeadRoom"};
+    private static final Object[] typeNames = {"Idee", "Own", "Average", "MaxHeadRoom", "Crazy"};
     private final JComboBox driverTypeComboBox = new JComboBox(typeNames);
 
     private boolean running = false;
