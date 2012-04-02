@@ -5,9 +5,9 @@ import javax.swing.*;
 
 public class RoadPanel extends JPanel {
     
-    Vector theLanes;
+    ArrayList<Lane> theLanes;
 
-    public RoadPanel(Vector l) {
+    public RoadPanel(ArrayList<Lane> l) {
         resize(View.WIDTH, View.HEIGHT);
         setVisible(true);
 
@@ -18,7 +18,7 @@ public class RoadPanel extends JPanel {
         Dimension d = getSize();
 
         int bottom = d.height - 50;
-        int laneWidth = 10;
+        int laneWidth = 12;
 
         g.setColor(Color.white);
         g.fillRect(0, 0, d.width, d.height);
@@ -28,7 +28,7 @@ public class RoadPanel extends JPanel {
         for (int i = 0; i < theLanes.size(); i++) { // paint each lane
             g.setColor(Color.black);
             g.drawLine(0, bottom - (i + 1) * laneWidth, d.width, bottom - (i + 1) * laneWidth);
-            ((Lane) theLanes.elementAt(i)).paint(g, bottom - (i + 1) * laneWidth + 2);
+            ((Lane) theLanes.get(i)).paint(g, bottom - (i + 1) * laneWidth + 2);
         }
     }
 }

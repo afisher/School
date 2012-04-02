@@ -18,7 +18,7 @@ public class View extends JFrame {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = 200;
     JButton addButton, maxButton, iOwnButton, ideeButton;
-    JButton aveButton, stopButton, startButton;
+    JButton aveButton, stopButton, startButton, clearButton;
     //TextArea theTA = new TextArea();
     final static int IDEE = 0;
     final static int OWN = 1;
@@ -28,9 +28,12 @@ public class View extends JFrame {
     int count; // count the cars?
 
     private JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
-    private final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 1, 300, 50)); 
+    private final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 0, 300, 50)); 
+    private final JSpinner numSemisSpinner  = new JSpinner(new SpinnerNumberModel(10, 0, 300, 10)); 
     private static final Object[] typeNames = {"Idee", "Own", "Average", "MaxHeadRoom"};
     private final JComboBox driverTypeComboBox = new JComboBox(typeNames);
+
+    private boolean running = false;
 
     int randSpeed() {
         return 50 + rand(25);
@@ -47,69 +50,47 @@ public class View extends JFrame {
 
         JLabel numLanesLabel = new JLabel("Num lanes:");
         JLabel numCarsLabel = new JLabel("Num cars:");
+        JLabel numSemisLabel = new JLabel("Num semis:");
         JLabel driverTypeLabel = new JLabel("Driver type:");
 
-
-        /*addButton = new Button("add 100 cars");
+        addButton = new JButton("add");
         add(addButton);
-
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                count += 100;
-                //theTA.append("count=" + count);
-                for (int i = 0; i < 100; i++) {
-                    Vehicle newVehicle;
-                    int r = rand(10);
 
-                    if (r != 0) {
-                        newVehicle = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
-                    } else {
-                        newVehicle = new Semi(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                int driverType = driverTypeComboBox.getSelectedIndex();
+                int numLanes   = (Integer)(numLanesSpinner.getValue());
+
+                if (numLanes > Controller.numLanes) {
+                    for (int i = 0; i < numLanes - Controller.numLanes; i++) {
+                        myModel.theRoad.addLane();
                     }
+                } else if (numLanes < Controller.numLanes) {
+                    for (int i = 0; i < Controller.numLanes - numLanes; i++) {
+                        myModel.theRoad.removeLane();
+                    }
+                }
+                Controller.numLanes = numLanes;
 
-                    //Car newCar = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
+                for (int i = 0; i < (Integer)(numCarsSpinner.getValue()); i++) {
+
+                    Vehicle newVehicle = new Car(randLoc(), byDriverType(driverType), randSpeed(), driverType);
+
                     myModel.addVehicle(newVehicle);
                     newVehicle.setPreferredLaneIf();  // if idee fixee
                 }
+                
+                for (int i = 0; i < (Integer)(numSemisSpinner.getValue()); i++) {
+
+                    Vehicle newVehicle = new Semi(randLoc(), byDriverType(driverType), randSpeed(), driverType);
+
+                    myModel.addVehicle(newVehicle);
+                    newVehicle.setPreferredLaneIf();  // if idee fixee
+                }
+
+                myModel.theRoad.repaint();
             }
         });
-
-        aveButton = new Button("ave driver");
-        add(aveButton);
-        aveButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                driverType = AVE;
-            }
-        });
-
-        maxButton = new Button("max driver");
-        add(maxButton);
-        maxButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                driverType = MAX;
-            }
-        });
-
-        iOwnButton = new Button("own it");
-        add(iOwnButton);
-        iOwnButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                driverType = OWN;
-            }
-        });
-
-        ideeButton = new Button("idee");
-        add(ideeButton);
-        ideeButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                driverType = IDEE;
-            }
-        });
-        */
 
         stopButton = new JButton("exit");
         add(stopButton);
@@ -125,24 +106,27 @@ public class View extends JFrame {
         startButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                int driverType = driverTypeComboBox.getSelectedIndex();
-                Random randGen = new Random();
-                for (int i = 0; i < (Integer)(numCarsSpinner.getValue()); i++) {
-                    Vehicle newVehicle;
-                    int r = randGen.nextInt(10);
-
-                    if (r != 0) {
-                        newVehicle = new Car(randLoc(), byDriverType(driverType), randSpeed(), driverType);
-                    } else {
-                        newVehicle = new Semi(randLoc(), byDriverType(driverType), randSpeed(), driverType);
-                    }
-
-                    //Car newCar = new Car(randLoc(), byDriverType(driverType), randSpeed(), "slow", driverType);
-                    myModel.addVehicle(newVehicle);
-                    newVehicle.setPreferredLaneIf();  // if idee fixee
+                running = !running;
+                if (running) {
+                    myModel.theController.setRunning(true);
+                    myModel.theController.run();
+                    startButton.setText("stop");
+                } else {
+                    myModel.theController.setRunning(false);
+                    startButton.setText("start");
                 }
 
-                myModel.theController.start();
+
+            }
+        });
+
+        clearButton = new JButton("clear");
+        add(clearButton);
+        clearButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                myModel.theRoad.clear();
+                myModel.theRoad.repaint();
             }
         });
 
@@ -150,9 +134,13 @@ public class View extends JFrame {
         panel.add(numLanesSpinner);
         panel.add(numCarsLabel);
         panel.add(numCarsSpinner);
+        panel.add(numSemisLabel);
+        panel.add(numSemisSpinner);
         panel.add(driverTypeLabel);
         panel.add(driverTypeComboBox);
+        panel.add(addButton);
         panel.add(startButton);
+        panel.add(clearButton);
         panel.add(stopButton);
 
         add(panel);

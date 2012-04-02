@@ -13,13 +13,13 @@
 import java.awt.*;
 
 class Car extends Vehicle {
-    static final int WIDTH=5, LENGTH=8;
+    static final int WIDTH=8, LENGTH=10;
     static Image ideeImage = Toolkit.getDefaultToolkit().createImage("car_idee.png");
     static Image ownImage = Toolkit.getDefaultToolkit().createImage("car_own.png");
     static Image aveImage = Toolkit.getDefaultToolkit().createImage("car_ave.png");
     static Image maxImage = Toolkit.getDefaultToolkit().createImage("car_max.png");
 
-    Image myImage;
+    private Image myImage;
     
     Car () {}
     

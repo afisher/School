@@ -20,25 +20,25 @@ public class Road extends JFrame {
 
     int count = 0;
     Controller a;
-    int numLanes;
-    Vector theLanes;
+    //Vector theLanes;
+    ArrayList<Lane> theLanes;
     RoadPanel myPanel;
 
     Controller getController() {
         return a;
     }
 
-    Vector getLanes() {
+    ArrayList getLanes() {
         return theLanes;
     }
 
     public Road(Controller theCtrllr, int nLanes) {
         a = theCtrllr;
-        numLanes = nLanes;
-        theLanes = new Vector();
-        for (int i = 1; i <= numLanes; i++) {
+        //theLanes = new Vector();
+        theLanes = new ArrayList<Lane>();
+        for (int i = 1; i <= nLanes; i++) {
             System.out.print("Adding a lane! i=" + i);
-            theLanes.addElement(new Lane(this, i - 1));
+            theLanes.add(new Lane(this, i - 1));
         }
         resize(View.WIDTH, View.HEIGHT);
         myPanel = new RoadPanel(theLanes);
@@ -48,30 +48,30 @@ public class Road extends JFrame {
 
     public Road(Controller theCtrllr, Vehicle aVehicle, int nLanes) {
         this(theCtrllr, nLanes);
-        ((Lane) theLanes.elementAt(0)).addVehicle(aVehicle);
+        ((Lane) theLanes.get(0)).addVehicle(aVehicle);
     }
 
     public Lane getNextLaneRight(Lane thisLane) {
         if (thisLane.getIndex() == 0) {
             return null;
         }
-        return (Lane) theLanes.elementAt(thisLane.getIndex() - 1);
+        return (Lane) theLanes.get(thisLane.getIndex() - 1);
     }
 
     public Lane getNextLaneLeft(Lane thisLane) {
         if (thisLane.getIndex() == theLanes.size() - 1) {
             return null;
         }
-        return (Lane) theLanes.elementAt(thisLane.getIndex() + 1);
+        return (Lane) theLanes.get(thisLane.getIndex() + 1);
     }
 
     public void addVehicle(Vehicle nuVehicle) {
-        ((Lane) theLanes.elementAt(0)).addVehicle(nuVehicle);
+        ((Lane) theLanes.get(0)).addVehicle(nuVehicle);
     }
 
     public void addVehicle(Vehicle nuVehicle, int whichLane) {
         if (whichLane < theLanes.size()) {
-            ((Lane) theLanes.elementAt(whichLane)).addVehicle(nuVehicle);
+            ((Lane) theLanes.get(whichLane)).addVehicle(nuVehicle);
         }
     }
     boolean firstTime = true;
@@ -86,7 +86,7 @@ public class Road extends JFrame {
     String throughput() {
         int tp=0;
         for (int i = 0; i < theLanes.size(); i++) { // paint each lane
-            tp += ((Lane) theLanes.elementAt(i)).throughput();
+            tp += ((Lane) theLanes.get(i)).throughput();
         }
         return "" + tp;
     }
@@ -105,13 +105,25 @@ public class Road extends JFrame {
 
     public void moveVehicles() {
         for (int i = 0; i < theLanes.size(); i++) {
-            ((Lane) theLanes.elementAt(i)).moveVehicles();
+            ((Lane) theLanes.get(i)).moveVehicles();
         }
     }
 
     public void clear() {
         for (int i = 0; i < theLanes.size(); i++) {
-            ((Lane) theLanes.elementAt(i)).clear();
+            ((Lane) theLanes.get(i)).clear();
+        }
+    }
+
+    public void addLane() {
+        theLanes.add(new Lane(this, theLanes.size()));
+        repaint();
+    }
+
+    public void removeLane() {
+        if (theLanes.size() > 0) {
+            theLanes.remove(theLanes.size() - 1);
+            repaint();
         }
     }
 }

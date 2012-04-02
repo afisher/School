@@ -19,7 +19,7 @@ class IdeeFixee extends Driver {
 
     void setPreferredLane() {
         int i = (int) (Math.random()*Controller.numLanes);
-        myPreferredLane = (Lane) (myVehicle.getLane().getRoad().getLanes().elementAt(i)); 
+        myPreferredLane = (Lane) (myVehicle.getLane().getRoad().getLanes().get(i)); 
 //        if (i==0) {
 //            myVehicle.setColor(Color.blue);
 //        } else if (i==1) {

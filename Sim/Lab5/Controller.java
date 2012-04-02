@@ -19,14 +19,14 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Controller /*extends JPanel*/ implements Runnable {
+public class Controller {
 
     Thread t;
     View theView;
     Model theModel;
-    static int numLanes = 5;
+    static int numLanes = 3;
     Experimenter myCreator;
-    //int timeToRun = 1000;
+    boolean running = false;
 
     public Controller(Experimenter e) { // remember who created me
         myCreator = e;
@@ -35,53 +35,24 @@ public class Controller /*extends JPanel*/ implements Runnable {
     public void init() {
         theModel = new Model(this, numLanes);
         theView = new View(theModel);
-        //setLayout(new BorderLayout());
-        //setSize(View.WIDTH, View.HEIGHT);
-        //add(theView);
-        //setVisible(true);
-
     }
-
-    public void start() {
-        if (t == null) {
-            t = new Thread(this);
-        }
-        t.start();
-    }
-    Vector stats = new Vector();
 
     public void run() {
-            //for (int i = 0; i < timeToRun; i++) {
-        while (true) {
-            try {
-                Thread.sleep(40);       // delay if nto running batch
-                theModel.moveVehicles();
-                theView.repaint();
-            } catch (Exception e) {
-                System.out.println("oops!" + e);
-            }
-        }
-        /*} else {
-            for (int type = View.IDEE; type <= View.MAX; type++) {
-                for (int n = 10; n <= Statistics.MAX_VEHICLES; n += 20) {
-                    Statistics s = new Statistics(n, type);
-                    theModel.init(s);
-                    stats.addElement(s);
-                    //for (int i = 0; i < timeToRun; i++) {
-                    while (true) {
+        new Thread() {
+            public void run() {
+                while (running) {
+                    try {
+                        Thread.sleep(40);       // delay if nto running batch
                         theModel.moveVehicles();
-                    } // time for
-                } // n for
-            } // driver for
-            //myCreator.finishedSir(stats);   // tell the experimenter that we're done (and hand off the stats)
-        }*/
+                    } catch (Exception e) {
+                        System.out.println("oops!" + e);
+                    }
+                }
+            }
+        }.start();
     }
 
-    public void stop() { // good practice to stop Threads when we stop
-        if (t != null) {
-            t.stop();
-        }
-    }
+    public void setRunning(boolean r) { running = r; }
 
     public int numCars() {
         return theView.numCars(); 
