@@ -20,7 +20,6 @@ public class Road extends JFrame {
 
     int count = 0;
     Controller a;
-    //Vector theLanes;
     ArrayList<Lane> theLanes;
     RoadPanel myPanel;
 
@@ -34,15 +33,18 @@ public class Road extends JFrame {
 
     public Road(Controller theCtrllr, int nLanes) {
         a = theCtrllr;
-        //theLanes = new Vector();
         theLanes = new ArrayList<Lane>();
         for (int i = 1; i <= nLanes; i++) {
             System.out.print("Adding a lane! i=" + i);
             theLanes.add(new Lane(this, i - 1));
         }
         resize(View.WIDTH, View.HEIGHT);
+
         myPanel = new RoadPanel(theLanes);
-        add(myPanel);
+        JScrollPane scroll = new JScrollPane(myPanel);
+
+        add(scroll);
+
         setVisible(true);
     }
 

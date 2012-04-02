@@ -42,11 +42,6 @@ class Car extends Vehicle {
     }
 
     public void paint(Graphics g, int y) {
-        //g.setColor(getColor());
-        //g.fillOval(getDisplayX(), y, LENGTH, WIDTH);
-        //
-        
-
         g.drawImage(myImage, getDisplayX(), y, LENGTH, WIDTH, null);
     }
     

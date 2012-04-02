@@ -19,12 +19,10 @@ public class View extends JFrame {
     public static final int HEIGHT = 200;
     JButton addButton, maxButton, iOwnButton, ideeButton;
     JButton aveButton, stopButton, startButton, clearButton;
-    //TextArea theTA = new TextArea();
     final static int IDEE = 0;
     final static int OWN = 1;
     final static int AVE = 2;
     final static int MAX = 3;
-    //int driverType = IDEE;
     int count; // count the cars?
 
     private JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
@@ -58,7 +56,7 @@ public class View extends JFrame {
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                int driverType = driverTypeComboBox.getSelectedIndex();
+                // adjust the number of lanes
                 int numLanes   = (Integer)(numLanesSpinner.getValue());
 
                 if (numLanes > Controller.numLanes) {
@@ -71,6 +69,9 @@ public class View extends JFrame {
                     }
                 }
                 Controller.numLanes = numLanes;
+
+                // add cars
+                int driverType = driverTypeComboBox.getSelectedIndex();
 
                 for (int i = 0; i < (Integer)(numCarsSpinner.getValue()); i++) {
 
@@ -147,8 +148,6 @@ public class View extends JFrame {
 
         pack();
         setVisible(true);
-        //add(theTA);
-
     }
 
     Color byDriverType(int driverType) {
@@ -170,16 +169,12 @@ public class View extends JFrame {
         paint(g);
     }
 
-    /*public void paint(Graphics g) {         // let the Model paint itself ?!
-        myModel.paint(g);
-    }*/
-
     Color randColor() {
         return new Color(getRand(256), getRand(256), getRand(256));
     }
 
     int randLoc() {
-        return (int) (Math.random() * WIDTH);
+        return (int) (Math.random() * RoadPanel.width);
     }
 
     int getRand(int max) {

@@ -12,7 +12,6 @@ import java.awt.*;
 public abstract class Vehicle {
 
     Color color;
-    int size;
     double speed, location;
     Lane myLane;
     Driver myDriver;
@@ -78,7 +77,7 @@ public abstract class Vehicle {
         through = false;
         //location += speed / 10;           // Um, so they go slowly enough?
         moveForward();
-        if (location > View.WIDTH) {    // A loop!
+        if (location > RoadPanel.width) {    // A loop!
             location = 0;
             through = true;
         }

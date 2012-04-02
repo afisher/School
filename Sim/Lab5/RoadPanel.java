@@ -6,9 +6,11 @@ import javax.swing.*;
 public class RoadPanel extends JPanel {
     
     ArrayList<Lane> theLanes;
+    static int width = 3000;
 
     public RoadPanel(ArrayList<Lane> l) {
-        resize(View.WIDTH, View.HEIGHT);
+        //resize(width, View.HEIGHT);
+        setPreferredSize(new Dimension(width, View.HEIGHT-100));
         setVisible(true);
 
         theLanes = l;
@@ -17,7 +19,7 @@ public class RoadPanel extends JPanel {
     public void paint(Graphics g) {
         Dimension d = getSize();
 
-        int bottom = d.height - 50;
+        int bottom = d.height;
         int laneWidth = 12;
 
         g.setColor(Color.white);

@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Lane {
 
-    Vector vehicles = new Vector();
+    ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
     Road theRoad;
     int index;
 
@@ -33,23 +33,23 @@ public class Lane {
     }
 
     public void addVehicle(Vehicle nuVehicle) {
-        vehicles.addElement(nuVehicle);
+        vehicles.add(nuVehicle);
         nuVehicle.setLane(this);
     }
 
     public void clear() {
-        vehicles.removeAllElements();
+        vehicles.clear();
     }
 
     public void removeVehicle(Vehicle oldVehicle) {
-        vehicles.removeElement(oldVehicle);
+        vehicles.remove(oldVehicle);
     }
 
     int throughput() {
         int tp = 0;
         
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
+            Vehicle theVehicle = (Vehicle) vehicles.get(i);
         }
 
         return tp;
@@ -57,7 +57,7 @@ public class Lane {
 
     public void moveVehicles() {
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
+            Vehicle theVehicle = (Vehicle) vehicles.get(i);
             theVehicle.move();
         }
     }
@@ -67,7 +67,7 @@ public class Lane {
         double loc = thisVehicle.getLocation();
 
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
+            Vehicle theVehicle = (Vehicle) vehicles.get(i);
             if (theVehicle != thisVehicle) {
                 double d = theVehicle.getLocation() - loc;
                 if (d >= 0 && d < minDistance) {
@@ -84,7 +84,7 @@ public class Lane {
         double loc = thisVehicle.getLocation();
 
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
+            Vehicle theVehicle = (Vehicle) vehicles.get(i);
             if (theVehicle != thisVehicle) {
                 double d = loc - theVehicle.getLocation();
                 if (d >= 0 && d < minDistance) {
@@ -98,7 +98,7 @@ public class Lane {
 
     public void paint(Graphics g, int h) {
         for (int i = vehicles.size() - 1; i >= 0; i--) {
-            Vehicle theVehicle = (Vehicle) vehicles.elementAt(i);
+            Vehicle theVehicle = (Vehicle) vehicles.get(i);
             theVehicle.paint(g, h);
         }
     }
