@@ -36,8 +36,8 @@ public class CrazyDriver extends Driver {
         
         double speed = myVehicle.getSpeed();
         timeUntilCanChangeLanes--;
-        if (timeUntilCanChangeLanes > 0)
-            return null;  // i.e. not change lanes now
+        /*if (timeUntilCanChangeLanes > 0)
+            return null;  // i.e. not change lanes now*/
         
         Lane myLane = myVehicle.getLane();
         Lane nextRight = myLane.getRoad().getNextLaneRight(myLane);
@@ -60,13 +60,12 @@ public class CrazyDriver extends Driver {
         }
         
         // the variable are all set, so now decide what to do
-       // if (speed < preferredSpeed-5) {
-            if (canGoR) {
-                returnMe = nextRight;
-            }
-            else if (canGoL)
-                returnMe = nextLeft;
-        //}
+        if (canGoR) {
+            returnMe = nextRight;
+        }
+        else if (canGoL) {
+            returnMe = nextLeft;
+        }
         
         if (returnMe != null) {
             timeUntilCanChangeLanes = NO_MORE_OFTEN;

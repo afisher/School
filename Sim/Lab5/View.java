@@ -15,10 +15,9 @@ import java.util.Random;
 
 public class View extends JFrame {
     Model myModel;
-    public static final int WIDTH = 1280;
+    public static final int WIDTH = 800;
     public static final int HEIGHT = 160;
-    JButton addButton, maxButton, iOwnButton, ideeButton;
-    JButton aveButton, stopButton, startButton, clearButton;
+    JButton applyButton, addButton, stopButton, startButton, clearButton;
     final static int IDEE = 0;
     final static int OWN = 1;
     final static int AVE = 2;
@@ -26,6 +25,7 @@ public class View extends JFrame {
     final static int CRAZY = 4;
     int count; // count the cars?
 
+    private JSpinner delaySpinner = new JSpinner(new SpinnerNumberModel(40, 1, 500, 10));
     private JSpinner numLanesSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1)); 
     private final JSpinner numCarsSpinner  = new JSpinner(new SpinnerNumberModel(100, 0, 300, 50)); 
     private final JSpinner numSemisSpinner  = new JSpinner(new SpinnerNumberModel(10, 0, 300, 10)); 
@@ -43,20 +43,18 @@ public class View extends JFrame {
     }
 
     public View(Model m) {
+        setLayout(new BorderLayout());
         myModel = m;
 
-        JPanel panel = new JPanel();
-
+        JLabel delayLabel = new JLabel("Delay:");
         JLabel numLanesLabel = new JLabel("Num lanes:");
         JLabel numCarsLabel = new JLabel("Num cars:");
         JLabel numSemisLabel = new JLabel("Num semis:");
         JLabel driverTypeLabel = new JLabel("Driver type:");
 
-        addButton = new JButton("add");
-        add(addButton);
-        addButton.addActionListener(new ActionListener() {
+        applyButton = new JButton("apply");
+        applyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 // adjust the number of lanes
                 int numLanes   = (Integer)(numLanesSpinner.getValue());
 
@@ -70,7 +68,13 @@ public class View extends JFrame {
                     }
                 }
                 Controller.numLanes = numLanes;
+                Controller.delay = (Integer)(delaySpinner.getValue()); 
+            }
+        });
 
+        addButton = new JButton("add");
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 // add cars
                 int driverType = driverTypeComboBox.getSelectedIndex();
 
@@ -95,7 +99,6 @@ public class View extends JFrame {
         });
 
         stopButton = new JButton("exit");
-        add(stopButton);
         stopButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -104,7 +107,6 @@ public class View extends JFrame {
         });
 
         startButton = new JButton("start");
-        add(startButton);
         startButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -123,7 +125,6 @@ public class View extends JFrame {
         });
 
         clearButton = new JButton("clear");
-        add(clearButton);
         clearButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -132,20 +133,30 @@ public class View extends JFrame {
             }
         });
 
-        panel.add(numLanesLabel);
-        panel.add(numLanesSpinner);
-        panel.add(numCarsLabel);
-        panel.add(numCarsSpinner);
-        panel.add(numSemisLabel);
-        panel.add(numSemisSpinner);
-        panel.add(driverTypeLabel);
-        panel.add(driverTypeComboBox);
-        panel.add(addButton);
-        panel.add(startButton);
-        panel.add(clearButton);
-        panel.add(stopButton);
+        JPanel topPanel = new JPanel();
+        topPanel.add(delayLabel);
+        topPanel.add(delaySpinner);
+        topPanel.add(numLanesLabel);
+        topPanel.add(numLanesSpinner);
+        topPanel.add(applyButton);
 
-        add(panel);
+        JPanel midPanel = new JPanel();
+        midPanel.add(numCarsLabel);
+        midPanel.add(numCarsSpinner);
+        midPanel.add(numSemisLabel);
+        midPanel.add(numSemisSpinner);
+        midPanel.add(driverTypeLabel);
+        midPanel.add(driverTypeComboBox);
+        midPanel.add(addButton);
+
+        JPanel botPanel = new JPanel();
+        botPanel.add(startButton);
+        botPanel.add(clearButton);
+        botPanel.add(stopButton);
+
+        add(topPanel, BorderLayout.NORTH);
+        add(midPanel, BorderLayout.CENTER);
+        add(botPanel, BorderLayout.SOUTH);
 
         pack();
         setVisible(true);
@@ -161,9 +172,11 @@ public class View extends JFrame {
                 return Color.green;
             case MAX:
                 return Color.BLUE;
+            case CRAZY:
+                return Color.pink;
         }
 
-        return Color.pink;
+        return Color.yellow;
     }
 
     public void update(Graphics g) {        // no flash

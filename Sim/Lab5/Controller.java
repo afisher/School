@@ -27,6 +27,7 @@ public class Controller {
     static int numLanes = 3;
     Experimenter myCreator;
     boolean running = false;
+    static int delay = 40;
 
     public Controller(Experimenter e) { // remember who created me
         myCreator = e;
@@ -42,7 +43,7 @@ public class Controller {
             public void run() {
                 while (running) {
                     try {
-                        Thread.sleep(40);       // delay if nto running batch
+                        Thread.sleep(delay);       // delay if nto running batch
                         theModel.moveVehicles();
                         theView.repaint();
                     } catch (Exception e) {
